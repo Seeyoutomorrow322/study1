@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>Game introduction</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --text: #edf5ff;
+      --muted: #aab7c9;
+      --green: #a6ff5f;
+      --cyan: #54e6d2;
+      --line: rgba(167, 194, 224, .18);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      min-width: 320px;
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: grid;
+      min-height: 100vh;
+      min-height: 100dvh;
+      place-items: center;
+      padding: 20px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 18% 14%, rgba(84, 230, 210, .16), transparent 38%),
+        radial-gradient(ellipse at 85% 90%, rgba(166, 255, 95, .1), transparent 35%),
+        linear-gradient(145deg, #080d17, #101827 58%, #15142a);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    button,
+    select { font: inherit; }
+
+    .intro {
+      position: relative;
+      display: grid;
+      width: min(100%, 960px);
+      min-height: min(76vh, 620px);
+      min-height: min(76dvh, 620px);
+      place-items: center;
+      padding: clamp(24px, 7vw, 76px);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: rgba(16, 24, 39, .78);
+      box-shadow: 0 28px 90px rgba(0, 0, 0, .38), inset 0 1px rgba(255, 255, 255, .06);
+      backdrop-filter: blur(14px);
+    }
+
+    .language-picker {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      min-height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: rgba(8, 13, 23, .8);
+      color: var(--text);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+
+    .slide {
+      width: min(100%, 700px);
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: .16em;
+    }
+
+    h1 {
+      margin: 0 0 22px;
+      font-size: clamp(34px, 7vw, 64px);
+      line-height: 1.08;
+      letter-spacing: -.04em;
+    }
+
+    .description {
+      min-height: 3.6em;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: clamp(16px, 2.4vw, 20px);
+      line-height: 1.8;
+    }
+
+    .page-number {
+      margin: 28px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .actions button {
+      min-width: 132px;
+      min-height: 48px;
+      padding: 0 20px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #162235;
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .actions button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      border-color: rgba(166, 255, 95, .55);
+      background: #1c2b40;
+    }
+
+    .actions button:focus-visible,
+    .language-picker:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px;
+    }
+
+    .actions .continue {
+      border-color: transparent;
+      background: linear-gradient(110deg, #b7ff66, #68f1bd 58%, #58e9db);
+      color: #071a18;
+      font-weight: 750;
+    }
+
+    .actions button:disabled {
+      border-color: rgba(167, 194, 224, .12);
+      background: #3b4655;
+      color: #9aa5b4;
+      cursor: not-allowed;
+      opacity: .65;
+      transform: none;
+    }
+
+    @media (max-width: 540px) {
+      body { padding: 12px; }
+
+      .intro {
+        min-height: 86vh;
+        min-height: 86dvh;
+        padding: 76px 20px 26px;
+        border-radius: 22px;
+      }
+
+      .language-picker {
+        top: 14px;
+        right: 14px;
+      }
+
+      .actions { gap: 8px; }
+
+      .actions button {
+        flex: 1 1 120px;
+        min-width: 0;
+        padding-inline: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="intro" aria-labelledby="slideTitle">
+    <label class="visually-hidden" for="languageSelect" id="languageLabel"></label>
+    <select class="language-picker" id="languageSelect" aria-labelledby="languageLabel">
+      <option value="en">English</option>
+      <option value="zh">中文</option>
+      <option value="ko">한국어</option>
+    </select>
+
+    <section class="slide" aria-describedby="slideDescription">
+      <p class="eyebrow" id="introLabel"></p>
+      <h1 id="slideTitle"></h1>
+      <p class="description" id="slideDescription" aria-live="polite"></p>
+      <p class="page-number" id="pageNumber" aria-live="polite"></p>
+      <nav class="actions" aria-label="Presentation controls">
+        <button id="previousButton" type="button"></button>
+        <button id="nextButton" type="button"></button>
+        <button class="continue" id="continueButton" type="button" disabled></button>
+      </nav>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const supportedLanguages = ["en", "zh", "ko"];
+      const query = new URLSearchParams(window.location.search);
+      const serializedTranslations = query.get("translations");
+
+      // Load only the selected strings supplied from index.html's translation dictionary.
+      if (!serializedTranslations) {
+        throw new Error("Open gameIntro.html from index.html to load the game translations.");
+      }
+
+      let translations;
+      try {
+        translations = JSON.parse(serializedTranslations);
+      } catch (error) {
+        throw new Error("The game translation data could not be loaded.", { cause: error });
+      }
+
+      let language = query.get("lang");
+      if (!supportedLanguages.includes(language) || !translations[language]) {
+        language = "en";
+      }
+
+      const slides = [
+        { title: "introPptSlide1Title", body: "introPptSlide1Body" },
+        { title: "introPptSlide2Title", body: "introPptSlide2Body" },
+        { title: "introPptSlide3Title", body: "introPptSlide3Body" }
+      ];
+      let slideIndex = 0;
+
+      const languageSelect = document.getElementById("languageSelect");
+      const languageLabel = document.getElementById("languageLabel");
+      const introLabel = document.getElementById("introLabel");
+      const slideTitle = document.getElementById("slideTitle");
+      const slideDescription = document.getElementById("slideDescription");
+      const pageNumber = document.getElementById("pageNumber");
+      const previousButton = document.getElementById("previousButton");
+      const nextButton = document.getElementById("nextButton");
+      const continueButton = document.getElementById("continueButton");
+
+      // Use the same key lookup and placeholder interpolation convention as index.html.
+      function translate(key, values = {}) {
+        const text = translations[language]?.[key];
+        if (typeof text !== "string") {
+          throw new Error(`Missing translation "${key}" for language "${language}".`);
+        }
+
+        return text.replace(/\{(\w+)\}/g, (match, name) =>
+          Object.hasOwn(values, name) ? String(values[name]) : match
+        );
+      }
+
+      function refreshLanguage() {
+        const slide = slides[slideIndex];
+
+        document.documentElement.lang =
+          language === "zh" ? "zh-CN" : language === "ko" ? "ko-KR" : "en";
+        document.title = translate("introPptLabel");
+        languageLabel.textContent = translate("languageLabel");
+        introLabel.textContent = translate("introPptLabel");
+        slideTitle.textContent = translate(slide.title);
+        slideDescription.textContent = translate(slide.body);
+        pageNumber.textContent = translate("introPptPage", {
+          current: slideIndex + 1,
+          total: slides.length
+        });
+        previousButton.textContent = translate("introPptPrevious");
+        nextButton.textContent = translate("introPptNext");
+        continueButton.textContent = translate("introPptContinue");
+        languageSelect.value = language;
+
+        previousButton.disabled = slideIndex === 0;
+        nextButton.disabled = slideIndex === slides.length - 1;
+        continueButton.disabled = slideIndex !== slides.length - 1;
+      }
+
+      function showPreviousSlide() {
+        if (slideIndex === 0) return;
+        slideIndex -= 1;
+        refreshLanguage();
+      }
+
+      function showNextSlide() {
+        if (slideIndex >= slides.length - 1) return;
+        slideIndex += 1;
+        refreshLanguage();
+      }
+
+      function continueToLevelSelect() {
+        // Enforce the last-slide requirement even if the handler is invoked programmatically.
+        if (slideIndex !== slides.length - 1) return;
+
+        if (query.get("embedded") === "1") {
+          // In the game iframe, notify the parent to close without navigating or selecting a level.
+          window.parent.postMessage({ type: "game-intro:close" }, "*");
+          return;
+        }
+
+        const indexUrl = new URL("./index.html", window.location.href);
+        indexUrl.searchParams.set("openLevelSelect", "1");
+        indexUrl.searchParams.set("lang", language);
+        window.location.assign(indexUrl.href);
+      }
+
+      languageSelect.addEventListener("change", () => {
+        const selectedLanguage = languageSelect.value;
+        if (!supportedLanguages.includes(selectedLanguage) || !translations[selectedLanguage]) {
+          throw new Error(`Unsupported language "${selectedLanguage}".`);
+        }
+
+        language = selectedLanguage;
+        refreshLanguage();
+        if (query.get("embedded") === "1") {
+          window.parent.postMessage(
+            { type: "game-intro:language", language },
+            "*"
+          );
+        }
+      });
+
+      previousButton.addEventListener("click", showPreviousSlide);
+      nextButton.addEventListener("click", showNextSlide);
+      continueButton.addEventListener("click", continueToLevelSelect);
+
+      refreshLanguage();
+    })();
+  </script>
+</body>
+</html>
