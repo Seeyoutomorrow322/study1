@@ -813,6 +813,56 @@
       .top-actions { width: auto; }
     }
 
+    /* A fixed entry point avoids changing the game board or its surrounding layout. */
+    .game-intro-launch {
+      position: fixed;
+      z-index: 5;
+      bottom: max(14px, env(safe-area-inset-bottom));
+      left: max(14px, env(safe-area-inset-left));
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid rgba(255, 255, 255, .76);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, .88);
+      color: #284d3f;
+      box-shadow: 0 8px 24px rgba(65, 135, 168, .16);
+      cursor: pointer;
+    }
+    .game-intro-launch[hidden],
+    .game-intro-overlay[hidden] { display: none; }
+    .game-intro-launch:hover { background: #fff; }
+    .game-intro-launch:focus-visible,
+    .game-intro-close:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px;
+    }
+    .game-intro-overlay {
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      background: #080d17;
+    }
+    .game-intro-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #080d17;
+    }
+    .game-intro-close {
+      position: absolute;
+      z-index: 1;
+      top: max(14px, env(safe-area-inset-top));
+      right: max(14px, env(safe-area-inset-right));
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid rgba(255, 255, 255, .3);
+      border-radius: 11px;
+      background: rgba(16, 24, 39, .92);
+      color: var(--text);
+      cursor: pointer;
+    }
+
     body[data-active-screen="menu"],
     body[data-active-screen="levels"],
     body[data-active-screen="highScores"],
@@ -1301,10 +1351,177 @@
     .leaderboard-actions { margin-bottom: 8px; }
     .leaderboard-status { color: #557789; }
 
+    .tutorial-screen {
+      display: grid;
+      min-height: min(66vh, 430px);
+      place-items: center;
+      padding: clamp(18px, 5vw, 42px);
+      text-align: center;
+    }
+    .tutorial-callout {
+      position: relative;
+      width: min(100%, 430px);
+      padding: clamp(22px, 5vw, 34px);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 26px;
+      background: linear-gradient(150deg, rgba(21, 33, 48, .98), rgba(12, 20, 32, .98));
+      box-shadow: 0 22px 60px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .08);
+      color: #eaf4f5;
+    }
+    .tutorial-callout::after {
+      position: absolute;
+      bottom: -13px;
+      left: 50%;
+      width: 24px;
+      height: 24px;
+      border-right: 1px solid rgba(255, 255, 255, .2);
+      border-bottom: 1px solid rgba(255, 255, 255, .2);
+      background: #101c2b;
+      content: "";
+      transform: translateX(-50%) rotate(45deg);
+    }
+    .tutorial-arrow {
+      display: grid;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 16px;
+      place-items: center;
+      border-radius: 19px;
+      background: rgba(166, 255, 95, .12);
+      color: #a6ff5f;
+      font-size: 30px;
+      font-weight: 800;
+      animation: tutorial-point 1.5s ease-in-out infinite;
+    }
+    @keyframes tutorial-point {
+      50% { transform: translateY(-5px); }
+    }
+    .tutorial-callout h2 {
+      margin: 0 0 10px;
+      color: #f1f7f8;
+      font-size: clamp(22px, 5vw, 29px);
+    }
+    .tutorial-callout p {
+      min-height: 3.4em;
+      margin: 0;
+      color: #c1d3de;
+      font-size: clamp(14px, 3.6vw, 16px);
+      line-height: 1.7;
+    }
+    .tutorial-progress {
+      margin: 20px 0 16px;
+      color: #9fceb5;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .08em;
+    }
+    .tutorial-actions {
+      position: relative;
+      grid-template-columns: 1fr;
+      justify-content: center;
+      justify-items: center;
+      margin: 0;
+      padding-top: 34px;
+    }
+    .tutorial-actions button {
+      min-width: 130px;
+      background: #a6ff5f;
+      box-shadow: 0 0 0 3px rgba(166, 255, 95, .28), 0 0 30px rgba(166, 255, 95, .7);
+      position: relative;
+      z-index: 1;
+    }
+    .tutorial-button .top-button-icon { font-size: 16px; }
+    .menu-tutorial-button {
+      position: absolute;
+      z-index: 3;
+      top: 10px;
+      left: 10px;
+      min-height: 38px;
+      padding-inline: 13px;
+      border: 1px solid rgba(255, 255, 255, .72);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .8);
+      box-shadow: 0 5px 16px rgba(46, 105, 127, .12);
+      color: #31576a;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+    .menu-tutorial-button:hover { background: #fff; }
+    .menu-tutorial-button:focus-visible { outline: 2px solid #4eaa91; outline-offset: 3px; }
+
+    .game[data-active-screen="tutorial"] .overlay {
+      position: fixed;
+      z-index: 20;
+      overflow: visible;
+      background: transparent;
+      backdrop-filter: blur(6px);
+    }
+    .tutorial-spotlight {
+      position: absolute;
+      z-index: 3;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .tutorial-spotlight-arrow {
+      fill: none;
+      stroke: #a6ff5f;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 6px rgba(166, 255, 95, .85));
+    }
+    .game[data-active-screen="tutorial"] .overlay-card {
+      position: relative;
+      z-index: 2;
+    }
+    .game[data-active-screen="tutorial"] .overlay-screen { overflow: visible; }
+    .game[data-active-screen="tutorial"] .board-shell { overflow: visible; }
+    .game[data-active-screen="tutorial"] .board-wrap { overflow: visible; }
+    .game[data-active-screen="tutorial"] .tutorial-callout::after {
+      bottom: -13px;
+      background: #101c2b;
+    }
+
+    @media (max-width: 540px) {
+      .tutorial-screen { min-height: min(70vh, 430px); padding: 12px; }
+      .tutorial-callout { padding: 24px 20px; border-radius: 22px; }
+      .tutorial-callout p { min-height: 0; }
+      .tutorial-actions { gap: 8px; }
+      .tutorial-actions button { min-width: 0; padding-inline: 14px; }
+      .menu-tutorial-button { top: 6px; left: 6px; min-height: 34px; padding-inline: 10px; font-size: 12px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
     }
+
+    /* The opening menu intentionally exposes only the start action. */
+    .game[data-active-screen="menu"] .menu-artwork,
+    .game[data-active-screen="menu"] .menu-character,
+    .game[data-active-screen="menu"] .menu-tutorial-button,
+    .game[data-active-screen="menu"] .menu-artwork-button,
+    .game[data-active-screen="menu"] .menu-art {
+      display: none !important;
+    }
+    .game[data-active-screen="menu"] .menu-copy {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+    .game[data-active-screen="menu"] .menu-copy > :not(.menu-actions) { display: none; }
+    .game[data-active-screen="menu"] .menu-actions {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+    .game[data-active-screen="menu"] .menu-actions > button:not(#menuStartButton) { display: none; }
+
   </style>
 </head>
 <body>
@@ -1332,6 +1549,7 @@
         <button class="icon-button" id="pauseButton" type="button" aria-label="Pause game" title="Pause / resume (Esc or Space)" hidden><span class="top-button-icon" aria-hidden="true">Ⅱ</span><span data-i18n="pause">Pause</span></button>
         <button class="icon-button music-button" id="musicButton" type="button" aria-label="Turn background music off" aria-pressed="true" title="Toggle background music" hidden><span class="top-button-icon" aria-hidden="true">♫</span><span data-i18n="musicOn">Music on</span></button>
         <button class="icon-button" id="restartButton" type="button" aria-label="Restart game" title="Restart" hidden><span class="top-button-icon" aria-hidden="true">↻</span><span data-i18n="restartShort">Restart</span></button>
+        <button class="icon-button tutorial-button" id="tutorialButton" type="button" aria-label="Show tutorial" title="Show tutorial" hidden><span class="top-button-icon" aria-hidden="true">➤</span><span data-i18n="tutorialButton">Tutorial</span></button>
       </div>
     </header>
 
@@ -1349,10 +1567,25 @@
           <span class="praise-message" id="praiseMessage"></span>
         </div>
         <div class="overlay" id="overlay">
+          <svg class="tutorial-spotlight" id="tutorialSpotlight" aria-hidden="true" hidden>
+            <defs>
+              <mask id="tutorialSpotlightMask" maskUnits="userSpaceOnUse" mask-type="luminance">
+                <rect id="tutorialSpotlightMaskBase" fill="white"></rect>
+                <rect id="tutorialDialogHole" fill="black" rx="34"></rect>
+                <rect id="tutorialButtonHole" fill="black" rx="18"></rect>
+              </mask>
+              <marker id="tutorialArrowHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#a6ff5f"></path>
+              </marker>
+            </defs>
+            <rect id="tutorialSpotlightDimmer" fill="rgba(3, 7, 13, .84)" mask="url(#tutorialSpotlightMask)"></rect>
+            <path class="tutorial-spotlight-arrow" id="tutorialGuideArrow" marker-end="url(#tutorialArrowHead)"></path>
+          </svg>
           <div class="overlay-card">
             <section class="overlay-screen" data-screen="menu">
               <img class="menu-artwork" src="images/snake-menu.svg" alt="Colorful retro Snake game menu with New Game, High Scores, Settings, and More Games buttons">
               <img class="menu-character" src="images/snake-character.png" alt="" aria-hidden="true">
+              <button class="menu-tutorial-button" id="menuTutorialButton" type="button" data-i18n="tutorialButton">Tutorial</button>
               <button class="menu-artwork-button" id="menuArtworkStartButton" type="button" data-action="new-game" aria-label="New Game" data-i18n-aria-label="newGameLabel"></button>
               <button class="menu-artwork-button" id="menuHighScoresButton" type="button" data-action="high-scores" aria-label="High Scores" data-i18n-aria-label="highScoresTitle"></button>
               <button class="menu-artwork-button" id="menuArtworkSettingsButton" type="button" data-action="settings" aria-label="Settings" data-i18n-aria-label="settings"></button>
@@ -1501,6 +1734,17 @@
                 <button class="secondary-button" id="victoryMenuButton" type="button" data-i18n="mainMenu">Main menu</button>
               </div>
             </section>
+            <section class="overlay-screen tutorial-screen" data-screen="tutorial" role="dialog" aria-modal="true" aria-labelledby="tutorialHeading" aria-describedby="tutorialDescription" hidden>
+              <div class="tutorial-callout">
+                <div class="tutorial-arrow" id="tutorialArrow" aria-hidden="true">↕</div>
+                <h2 id="tutorialHeading"></h2>
+                <p id="tutorialDescription"></p>
+                <div class="tutorial-progress" id="tutorialProgress" aria-live="polite"></div>
+                <div class="menu-actions tutorial-actions">
+                  <button class="primary-button" id="tutorialNextButton" type="button"></button>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </div>
@@ -1524,6 +1768,22 @@
     </div>
   </main>
 
+  <!-- Game-only shortcut; the iframe overlay keeps the current game document loaded. -->
+  <button class="game-intro-launch" id="gameIntroLaunchButton" type="button" data-i18n="tutorialButton" hidden>
+    Tutorial
+  </button>
+  <div class="game-intro-overlay" id="gameIntroOverlay" hidden>
+    <iframe
+      class="game-intro-frame"
+      id="gameIntroFrame"
+      title="Game introduction"
+      allow="autoplay"
+    ></iframe>
+    <button class="game-intro-close" id="gameIntroCloseButton" type="button" data-i18n="close">
+      Close
+    </button>
+  </div>
+
   <script>
     (() => {
       const canvas = document.getElementById("gameCanvas");
@@ -1535,6 +1795,23 @@
       const settingsButton = document.getElementById("settingsButton");
       const pauseButton = document.getElementById("pauseButton");
       const musicButton = document.getElementById("musicButton");
+      const tutorialButton = document.getElementById("tutorialButton");
+      const gameIntroLaunchButton = document.getElementById("gameIntroLaunchButton");
+      const gameIntroOverlay = document.getElementById("gameIntroOverlay");
+      const gameIntroFrame = document.getElementById("gameIntroFrame");
+      const gameIntroCloseButton = document.getElementById("gameIntroCloseButton");
+      const tutorialSpotlight = document.getElementById("tutorialSpotlight");
+      const tutorialSpotlightMaskBase = document.getElementById("tutorialSpotlightMaskBase");
+      const tutorialDialogHole = document.getElementById("tutorialDialogHole");
+      const tutorialButtonHole = document.getElementById("tutorialButtonHole");
+      const tutorialSpotlightDimmer = document.getElementById("tutorialSpotlightDimmer");
+      const tutorialGuideArrow = document.getElementById("tutorialGuideArrow");
+      const tutorialCallout = document.querySelector(".tutorial-callout");
+      const tutorialHeading = document.getElementById("tutorialHeading");
+      const tutorialDescription = document.getElementById("tutorialDescription");
+      const tutorialProgress = document.getElementById("tutorialProgress");
+      const tutorialArrow = document.getElementById("tutorialArrow");
+      const tutorialNextButton = document.getElementById("tutorialNextButton");
       const languageSelect = document.getElementById("languageSelect");
       const volumeSlider = document.getElementById("volumeSlider");
       const volumeValue = document.getElementById("volumeValue");
@@ -1603,6 +1880,19 @@
           musicTitle: "Toggle background music",
           restartShort: "Restart",
           restart: "Restart",
+          tutorialButton: "Tutorial",
+          tutorialTitle: "How to play",
+          tutorialStep: "Step {current} of {total}",
+          tutorialDirectionsTitle: "Move with the arrow keys",
+          tutorialDirectionsText: "Use the ↑ ↓ ← → arrow keys to guide the snake around the board.",
+          tutorialFoodTitle: "Eat food to grow",
+          tutorialFoodText: "Each food raises your score and makes the snake's body longer.",
+          tutorialCollisionTitle: "Avoid collisions",
+          tutorialCollisionText: "Hitting a wall or your own body ends the game.",
+          tutorialRestartTitle: "Ready for another try?",
+          tutorialRestartText: "Press the Restart button to reset the board and start again.",
+          tutorialNext: "Next",
+          tutorialFinish: "Start playing",
           statsLabel: "Game statistics",
           scoreLabel: "SCORE",
           bestLabel: "BEST",
@@ -1617,6 +1907,17 @@
           readyTitle: "Ready to play?",
           readyText: "Eat the glowing fruit to grow longer.<br>Don't hit the walls or bite yourself!",
           start: "Start game",
+          introPptLabel: "Game introduction",
+          introPptSlide1Title: "Welcome to Snake",
+          introPptSlide1Body: "Guide the snake around the board and get ready for a fun challenge.",
+          introPptSlide2Title: "Eat food and grow",
+          introPptSlide2Body: "Collect food to increase your score. The snake grows longer, so watch where its body is.",
+          introPptSlide3Title: "Avoid collisions",
+          introPptSlide3Body: "Avoid the walls and the snake's own body. Continue when you're ready to choose a level.",
+          introPptPrevious: "Previous",
+          introPptNext: "Next",
+          introPptContinue: "Continue",
+          introPptPage: "Page {current} of {total}",
           moveLabel: "Move",
           orLabel: "or",
           helpText: "Esc / Space to pause · Swipe or use the arrows on mobile",
@@ -1684,6 +1985,19 @@
           musicTitle: "开关背景音乐",
           restartShort: "重开",
           restart: "重新开始",
+          tutorialButton: "教程",
+          tutorialTitle: "游戏玩法",
+          tutorialStep: "第 {current} 步，共 {total} 步",
+          tutorialDirectionsTitle: "使用方向键移动",
+          tutorialDirectionsText: "使用 ↑ ↓ ← → 方向键控制蛇在棋盘上移动。",
+          tutorialFoodTitle: "吃食物来变长",
+          tutorialFoodText: "每吃到食物都会增加分数，并让蛇的身体变长。",
+          tutorialCollisionTitle: "小心碰撞",
+          tutorialCollisionText: "撞到墙壁或自己的身体，游戏就会结束。",
+          tutorialRestartTitle: "再试一次吧！",
+          tutorialRestartText: "按下重新开始按钮即可重置棋盘并重新开始。",
+          tutorialNext: "下一步",
+          tutorialFinish: "开始游戏",
           statsLabel: "游戏数据",
           scoreLabel: "当前得分",
           bestLabel: "最高纪录",
@@ -1698,6 +2012,17 @@
           readyTitle: "准备好了吗？",
           readyText: "吃掉发光果实，让蛇蛇变长。<br>别撞到墙，也别咬到自己哦！",
           start: "开始游戏",
+          introPptLabel: "游戏介绍",
+          introPptSlide1Title: "欢迎来到贪吃蛇",
+          introPptSlide1Body: "控制小蛇在场地中移动，开始一场轻松又有趣的挑战。",
+          introPptSlide2Title: "吃下食物，变得更长",
+          introPptSlide2Body: "收集场地中的食物来增加分数。小蛇会不断变长，行动时要留意身体的位置。",
+          introPptSlide3Title: "小心碰撞",
+          introPptSlide3Body: "避免撞到场地边缘或小蛇自己的身体。准备好后，继续选择你的游戏关卡。",
+          introPptPrevious: "上一页",
+          introPptNext: "下一页",
+          introPptContinue: "下一步",
+          introPptPage: "第 {current} / {total} 页",
           moveLabel: "移动",
           orLabel: "或",
           helpText: "Esc / 空格键暂停 · 手机可滑动或使用方向键",
@@ -1765,6 +2090,19 @@
           musicTitle: "배경 음악 켜기/끄기",
           restartShort: "다시 시작",
           restart: "게임 다시 시작",
+          tutorialButton: "튜토리얼",
+          tutorialTitle: "게임 방법",
+          tutorialStep: "{total}단계 중 {current}단계",
+          tutorialDirectionsTitle: "방향키로 이동하기",
+          tutorialDirectionsText: "↑ ↓ ← → 방향키를 눌러 뱀을 움직이세요.",
+          tutorialFoodTitle: "먹이를 먹고 성장하기",
+          tutorialFoodText: "먹이를 먹으면 점수가 오르고 뱀의 몸이 길어집니다.",
+          tutorialCollisionTitle: "벽과 몸을 조심하세요",
+          tutorialCollisionText: "벽이나 자신의 몸에 부딪히면 게임이 끝납니다.",
+          tutorialRestartTitle: "다시 도전해 보세요!",
+          tutorialRestartText: "다시 시작 버튼을 누르면 보드를 초기화하고 새 게임을 시작합니다.",
+          tutorialNext: "다음",
+          tutorialFinish: "게임 시작",
           statsLabel: "게임 정보",
           scoreLabel: "현재 점수",
           bestLabel: "최고 기록",
@@ -1779,6 +2117,17 @@
           readyTitle: "준비됐나요?",
           readyText: "빛나는 과일을 먹고 더 길게 자라세요.<br>벽에 부딪히거나 몸을 물지 마세요!",
           start: "게임 시작",
+          introPptLabel: "게임 소개",
+          introPptSlide1Title: "스네이크에 오신 것을 환영합니다",
+          introPptSlide1Body: "뱀을 움직여 보드를 돌아다니며 즐거운 도전을 시작하세요.",
+          introPptSlide2Title: "먹이를 먹고 성장하세요",
+          introPptSlide2Body: "먹이를 모아 점수를 올리세요. 뱀이 길어지므로 몸의 위치를 주의하세요.",
+          introPptSlide3Title: "충돌을 조심하세요",
+          introPptSlide3Body: "벽이나 뱀의 몸에 부딪히지 않도록 하세요. 준비되면 다음 단계에서 난이도를 선택하세요.",
+          introPptPrevious: "이전",
+          introPptNext: "다음",
+          introPptContinue: "계속",
+          introPptPage: "{total}페이지 중 {current}페이지",
           moveLabel: "이동",
           orLabel: "또는",
           helpText: "Esc / Space 일시정지 · 모바일에서는 스와이프 또는 방향 버튼",
@@ -1835,6 +2184,12 @@
         ArrowLeft: "left", a: "left", A: "left",
         ArrowRight: "right", d: "right", D: "right"
       };
+      const tutorialSteps = [
+        { title: "tutorialDirectionsTitle", text: "tutorialDirectionsText", arrow: "↕" },
+        { title: "tutorialFoodTitle", text: "tutorialFoodText", arrow: "↓" },
+        { title: "tutorialCollisionTitle", text: "tutorialCollisionText", arrow: "↗" },
+        { title: "tutorialRestartTitle", text: "tutorialRestartText", arrow: "↑" }
+      ];
 
       let snake;
       let previousSnake = [];
@@ -1857,6 +2212,10 @@
       let highScoresReturnScreen = "menu";
       let highScoresReturnState = "menu";
       let highScoresResumeGame = false;
+      let tutorialStepIndex = 0;
+      let tutorialReturnState = "menu";
+      let tutorialReturnScreen = "menu";
+      let tutorialSpotlightFrame = null;
       const difficultyNames = ["easy", "normal", "hard"];
       const difficultyIntervals = { easy: 220, normal: 205, hard: 190 };
       let selectedDifficulty = "easy";
@@ -1870,6 +2229,8 @@
       let musicTimer = null;
       let musicStep = 0;
       let musicStarting = false;
+      let gameIntroReturnState = null;
+      let gameIntroReturnScreen = null;
 
       bestElement.textContent = formatScore(best);
       resetBoard();
@@ -1882,7 +2243,25 @@
       updateGameControls();
       draw();
 
+      // Return from the standalone presentation directly into the existing level picker.
+      const returnToLevelSelect =
+        new URLSearchParams(window.location.search).get("openLevelSelect") === "1";
+      if (returnToLevelSelect) {
+        history.replaceState(null, "", window.location.pathname + window.location.hash);
+        openLevelSelect();
+      }
+
       function loadLanguage() {
+        const requestedLanguage = new URLSearchParams(window.location.search).get("lang");
+        if (Object.hasOwn(translations, requestedLanguage)) {
+          try {
+            localStorage.setItem("neon-snake-language", requestedLanguage);
+          } catch (error) {
+            console.warn("Unable to save the language preference.", error);
+          }
+          return requestedLanguage;
+        }
+
         try {
           const savedLanguage = localStorage.getItem("neon-snake-language");
           return Object.hasOwn(translations, savedLanguage) ? savedLanguage : "en";
@@ -1947,6 +2326,9 @@
         musicButton.title = translate("musicTitle");
         document.getElementById("restartButton").title = translate("restart");
         document.getElementById("restartButton").setAttribute("aria-label", translate("restart"));
+        tutorialButton.title = translate("tutorialButton");
+        tutorialButton.setAttribute("aria-label", translate("tutorialButton"));
+        if (state === "tutorial") renderTutorialStep();
         updatePauseButton();
         updateMusicButton();
         updateStats();
@@ -2172,11 +2554,16 @@
         gameRoot.dataset.activeScreen = name;
         document.body.dataset.activeScreen = name;
         overlay.classList.toggle("hidden", name === "game");
-        settingsButton.disabled = name === "settings";
+        tutorialSpotlight.hidden = name !== "tutorial";
+        if (name !== "tutorial" && tutorialSpotlightFrame !== null) {
+          cancelAnimationFrame(tutorialSpotlightFrame);
+          tutorialSpotlightFrame = null;
+        }
+        settingsButton.disabled = name === "settings" || name === "tutorial";
         screens.forEach((screen) => {
           screen.hidden = screen.dataset.screen !== name;
         });
-        rankingButton.disabled = name === "highScores";
+        rankingButton.disabled = name === "highScores" || name === "tutorial";
       }
 
       function updateGameControls() {
@@ -2184,6 +2571,144 @@
         pauseButton.hidden = !visible;
         musicButton.hidden = !visible;
         document.getElementById("restartButton").hidden = !visible;
+        tutorialButton.hidden = !visible;
+        gameIntroLaunchButton.hidden = !visible;
+      }
+
+      function hasCompletedTutorial() {
+        try {
+          return localStorage.getItem("neon-snake-tutorial-completed") === "true";
+        } catch (error) {
+          console.warn("Unable to read the tutorial completion status.", error);
+          return false;
+        }
+      }
+
+      function saveTutorialCompletion() {
+        try {
+          localStorage.setItem("neon-snake-tutorial-completed", "true");
+        } catch (error) {
+          console.warn("Unable to save the tutorial completion status.", error);
+        }
+      }
+
+      function renderTutorialStep() {
+        const step = tutorialSteps[tutorialStepIndex];
+        tutorialHeading.textContent = translate(step.title);
+        tutorialDescription.textContent = translate(step.text);
+        tutorialProgress.textContent = translate("tutorialStep", {
+          current: tutorialStepIndex + 1,
+          total: tutorialSteps.length
+        });
+        tutorialArrow.textContent = step.arrow;
+        tutorialNextButton.textContent = translate(
+          tutorialStepIndex === tutorialSteps.length - 1 ? "tutorialFinish" : "tutorialNext"
+        );
+        if (activeScreen === "tutorial") scheduleTutorialSpotlightUpdate();
+      }
+
+      function scheduleTutorialSpotlightUpdate() {
+        if (activeScreen === "tutorial" && tutorialSpotlightFrame === null) {
+          tutorialSpotlightFrame = requestAnimationFrame(updateTutorialSpotlight);
+        }
+      }
+
+      function updateTutorialSpotlight() {
+        tutorialSpotlightFrame = null;
+        if (activeScreen !== "tutorial" || tutorialSpotlight.hidden) return;
+
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
+        const calloutBounds = tutorialCallout.getBoundingClientRect();
+        const buttonBounds = tutorialNextButton.getBoundingClientRect();
+        setSvgAttribute(tutorialSpotlight, "viewBox", `0 0 ${width} ${height}`);
+
+        setSvgAttribute(tutorialSpotlightMaskBase, "width", width);
+        setSvgAttribute(tutorialSpotlightMaskBase, "height", height);
+        setSvgAttribute(tutorialSpotlightDimmer, "width", width);
+        setSvgAttribute(tutorialSpotlightDimmer, "height", height);
+
+        const dialogPadding = 10;
+        setSvgAttribute(tutorialDialogHole, "x", calloutBounds.left - dialogPadding);
+        setSvgAttribute(tutorialDialogHole, "y", calloutBounds.top - dialogPadding);
+        setSvgAttribute(tutorialDialogHole, "width", calloutBounds.width + dialogPadding * 2);
+        setSvgAttribute(tutorialDialogHole, "height", calloutBounds.height + dialogPadding * 2);
+
+        const buttonPadding = 8;
+        setSvgAttribute(tutorialButtonHole, "x", buttonBounds.left - buttonPadding);
+        setSvgAttribute(tutorialButtonHole, "y", buttonBounds.top - buttonPadding);
+        setSvgAttribute(tutorialButtonHole, "width", buttonBounds.width + buttonPadding * 2);
+        setSvgAttribute(tutorialButtonHole, "height", buttonBounds.height + buttonPadding * 2);
+
+        const arrowX = buttonBounds.left + buttonBounds.width / 2;
+        const arrowStartY = Math.max(8, buttonBounds.top - 34);
+        const arrowEndY = buttonBounds.top - 6;
+        setSvgAttribute(
+          tutorialGuideArrow,
+          "d",
+          `M ${arrowX} ${arrowStartY} C ${arrowX} ${arrowStartY + 10}, ${arrowX} ${arrowEndY - 10}, ${arrowX} ${arrowEndY}`
+        );
+        scheduleTutorialSpotlightUpdate();
+      }
+
+      function setSvgAttribute(element, attribute, value) {
+        const stringValue = String(value);
+        if (element.getAttribute(attribute) !== stringValue) {
+          element.setAttribute(attribute, stringValue);
+        }
+      }
+
+      function startTutorial(firstVisit = false) {
+        if (state === "tutorial") return;
+
+        if (firstVisit) {
+          selectedDifficulty = "easy";
+          resetBoard();
+          tutorialReturnState = "running";
+          tutorialReturnScreen = "game";
+        } else {
+          tutorialReturnState = state;
+          tutorialReturnScreen = activeScreen;
+          if (state === "menu") {
+            selectedDifficulty = "easy";
+            resetBoard();
+          }
+        }
+
+        stopMusic();
+        state = "tutorial";
+        tutorialStepIndex = 0;
+        renderTutorialStep();
+        showScreen("tutorial");
+        scheduleTutorialSpotlightUpdate();
+        updateGameControls();
+        tutorialNextButton.focus();
+      }
+
+      function advanceTutorial() {
+        if (tutorialStepIndex < tutorialSteps.length - 1) {
+          tutorialStepIndex += 1;
+          renderTutorialStep();
+          tutorialNextButton.focus();
+          return;
+        }
+
+        saveTutorialCompletion();
+        state = tutorialReturnState;
+        if (state === "running") {
+          startGame();
+          tutorialButton.focus();
+          return;
+        }
+
+        showScreen(tutorialReturnScreen);
+        updateGameControls();
+        updatePauseButton();
+        if (tutorialReturnScreen === "menu") {
+          document.getElementById("menuTutorialButton").focus();
+        } else {
+          tutorialButton.focus();
+        }
       }
 
       function updateVolumeDisplay() {
@@ -2224,6 +2749,83 @@
         state = "levels";
         updateGameControls();
         showScreen("levels");
+      }
+
+      function openOpeningPresentation() {
+        window.location.assign(createGameIntroUrl(false).href);
+      }
+
+      // Share the existing translated strings with either the standalone page or its iframe.
+      function createGameIntroUrl(embedded) {
+        const introKeys = [
+          "introPptLabel",
+          "introPptSlide1Title",
+          "introPptSlide1Body",
+          "introPptSlide2Title",
+          "introPptSlide2Body",
+          "introPptSlide3Title",
+          "introPptSlide3Body",
+          "introPptPrevious",
+          "introPptNext",
+          "introPptContinue",
+          "introPptPage",
+          "languageLabel"
+        ];
+        const introTranslations = Object.fromEntries(
+          Object.entries(translations).map(([locale, dictionary]) => [
+            locale,
+            Object.fromEntries(introKeys.map((key) => [key, dictionary[key]]))
+          ])
+        );
+        const introUrl = new URL("./gameIntro.html", window.location.href);
+        introUrl.searchParams.set("lang", language);
+        introUrl.searchParams.set("translations", JSON.stringify(introTranslations));
+        if (embedded) introUrl.searchParams.set("embedded", "1");
+        return introUrl;
+      }
+
+      function openGameIntroFrame() {
+        if (!gameIntroOverlay.hidden) return;
+
+        gameIntroReturnState = state;
+        gameIntroReturnScreen = activeScreen;
+        if (state === "running") {
+          state = "paused";
+          stopMusic();
+          showScreen("paused");
+          updateGameControls();
+          updatePauseButton();
+        }
+
+        gameIntroFrame.src = createGameIntroUrl(true).href;
+        gameIntroOverlay.hidden = false;
+        gameIntroCloseButton.focus();
+      }
+
+      function closeGameIntroFrame() {
+        if (gameIntroOverlay.hidden) return;
+
+        gameIntroOverlay.hidden = true;
+        gameIntroFrame.src = "about:blank";
+
+        const returnState = gameIntroReturnState;
+        const returnScreen = gameIntroReturnScreen;
+        gameIntroReturnState = null;
+        gameIntroReturnScreen = null;
+
+        if (returnState === "running") {
+          startGame();
+          gameIntroLaunchButton.focus();
+          return;
+        }
+
+        if (returnState !== null && returnScreen !== null) {
+          state = returnState;
+          showScreen(returnScreen);
+          updateGameControls();
+          updatePauseButton();
+          gameIntroLaunchButton.focus();
+        }
       }
 
       function openHighScores() {
@@ -2637,9 +3239,10 @@
         ctx.restore();
       }
 
-      document.getElementById("menuStartButton").addEventListener("click", openLevelSelect);
+      // Start with the introduction; the final slide's Next button opens level selection.
+      document.getElementById("menuStartButton").addEventListener("click", openOpeningPresentation);
       document.getElementById("menuSettingsButton").addEventListener("click", openSettings);
-      document.getElementById("menuArtworkStartButton").addEventListener("click", openLevelSelect);
+      document.getElementById("menuArtworkStartButton").addEventListener("click", openOpeningPresentation);
       document.getElementById("menuHighScoresButton").addEventListener("click", openHighScores);
       document.getElementById("menuArtworkSettingsButton").addEventListener("click", openSettings);
       document.getElementById("menuMoreGamesButton").addEventListener("click", openMoreGames);
@@ -2658,6 +3261,43 @@
       document.getElementById("gameOverMenuButton").addEventListener("click", returnToMenu);
       document.getElementById("victoryLevelsButton").addEventListener("click", openLevelSelect);
       document.getElementById("victoryMenuButton").addEventListener("click", returnToMenu);
+      tutorialButton.addEventListener("click", () => startTutorial());
+      gameIntroLaunchButton.addEventListener("click", openGameIntroFrame);
+      gameIntroCloseButton.addEventListener("click", closeGameIntroFrame);
+      window.addEventListener("message", (event) => {
+        if (event.source !== gameIntroFrame.contentWindow || !event.data) return;
+
+        if (event.data.type === "game-intro:close") {
+          closeGameIntroFrame();
+          return;
+        }
+
+        if (
+          event.data.type === "game-intro:language" &&
+          Object.hasOwn(translations, event.data.language)
+        ) {
+          language = event.data.language;
+          try {
+            localStorage.setItem("neon-snake-language", language);
+          } catch (error) {
+            console.warn("Unable to save the language preference.", error);
+          }
+          applyLanguage();
+        }
+      });
+      document.getElementById("menuTutorialButton").addEventListener("click", () => startTutorial());
+      tutorialNextButton.addEventListener("click", advanceTutorial);
+      window.addEventListener("resize", scheduleTutorialSpotlightUpdate);
+      window.addEventListener("scroll", scheduleTutorialSpotlightUpdate, true);
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", scheduleTutorialSpotlightUpdate);
+        window.visualViewport.addEventListener("scroll", scheduleTutorialSpotlightUpdate);
+      }
+      if ("ResizeObserver" in window) {
+        const tutorialResizeObserver = new ResizeObserver(scheduleTutorialSpotlightUpdate);
+        tutorialResizeObserver.observe(tutorialCallout);
+        tutorialResizeObserver.observe(tutorialNextButton);
+      }
       document.querySelectorAll(".level-choice").forEach((button) => {
         button.addEventListener("click", () => {
           startSelectedDifficulty(button.dataset.difficulty);
@@ -2812,6 +3452,8 @@
           if (trackedTouch) touchStart = null;
         }, { passive: true });
       }
+
+      // Do not auto-launch the gameplay tutorial; the opening presentation is the entry flow.
     })();
   </script>
 </body>
