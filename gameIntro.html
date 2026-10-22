@@ -3,16 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101827">
+  <meta name="theme-color" content="#0a0b10">
   <title>Game introduction</title>
   <style>
     :root {
-      color-scheme: dark;
-      --text: #edf5ff;
-      --muted: #aab7c9;
-      --green: #a6ff5f;
-      --cyan: #54e6d2;
-      --line: rgba(167, 194, 224, .18);
+      color-scheme: light;
+      --text: #31576a;
+      --muted: #557789;
+      --green: #48a884;
+      --line: rgba(92, 158, 183, .24);
     }
 
     * { box-sizing: border-box; }
@@ -29,13 +28,10 @@
       display: grid;
       min-height: 100vh;
       min-height: 100dvh;
-      place-items: center;
-      padding: 20px;
+      place-items: stretch;
+      padding: 0;
       overflow: hidden;
-      background:
-        radial-gradient(ellipse at 18% 14%, rgba(84, 230, 210, .16), transparent 38%),
-        radial-gradient(ellipse at 85% 90%, rgba(166, 255, 95, .1), transparent 35%),
-        linear-gradient(145deg, #080d17, #101827 58%, #15142a);
+      background: #0a0b10;
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     }
@@ -46,16 +42,21 @@
     .intro {
       position: relative;
       display: grid;
-      width: min(100%, 960px);
-      min-height: min(76vh, 620px);
-      min-height: min(76dvh, 620px);
-      place-items: center;
-      padding: clamp(24px, 7vw, 76px);
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      background: rgba(16, 24, 39, .78);
-      box-shadow: 0 28px 90px rgba(0, 0, 0, .38), inset 0 1px rgba(255, 255, 255, .06);
-      backdrop-filter: blur(14px);
+      grid-template-columns: minmax(230px, .8fr) minmax(0, 1.2fr);
+      align-items: center;
+      gap: clamp(24px, 5vw, 58px);
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      min-height: 100vh;
+      min-height: 100dvh;
+      max-width: none;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: url("pptbackground.png") center/cover no-repeat fixed;
+      box-shadow: none;
+      backdrop-filter: none;
     }
 
     .language-picker {
@@ -64,10 +65,11 @@
       right: 20px;
       min-height: 40px;
       padding: 0 12px;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(124, 183, 201, .35);
       border-radius: 11px;
-      background: rgba(8, 13, 23, .8);
+      background: rgba(255, 255, 255, .84);
       color: var(--text);
+      cursor: pointer;
     }
 
     .visually-hidden {
@@ -82,13 +84,14 @@
     }
 
     .slide {
-      width: min(100%, 700px);
-      text-align: center;
+      width: 100%;
+      padding-top: 30px;
+      text-align: left;
     }
 
     .eyebrow {
       margin: 0 0 18px;
-      color: var(--cyan);
+      color: #398e83;
       font-size: 13px;
       font-weight: 750;
       letter-spacing: .16em;
@@ -99,11 +102,12 @@
       font-size: clamp(34px, 7vw, 64px);
       line-height: 1.08;
       letter-spacing: -.04em;
+      color: #31576a;
     }
 
     .description {
       min-height: 3.6em;
-      margin: 0 auto;
+      margin: 0;
       color: var(--muted);
       font-size: clamp(16px, 2.4vw, 20px);
       line-height: 1.8;
@@ -111,14 +115,114 @@
 
     .page-number {
       margin: 28px 0 0;
-      color: var(--muted);
+      color: #66899a;
       font-size: 14px;
+    }
+
+    .character-stage {
+      position: relative;
+      display: grid;
+      width: 100%;
+      max-width: 360px;
+      aspect-ratio: 1;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .character-stage::before,
+    .character-stage::after {
+      position: absolute;
+      z-index: -1;
+      border: 1px solid rgba(83, 166, 177, .2);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .character-stage::before { inset: 7%; }
+    .character-stage::after { inset: 17%; border-style: dashed; border-color: rgba(106, 173, 193, .22); }
+
+    .intro-snake-body,
+    .intro-snake-head {
+      position: absolute;
+      border: 2px solid #00ff00;
+      background: rgba(0, 255, 0, .28);
+      box-shadow: 0 0 12px #00ff00, inset 0 0 12px rgba(0, 255, 0, .45);
+      animation: character-float 3.8s ease-in-out infinite;
+    }
+
+    .intro-snake-body { top: 55%; left: 15%; width: 18%; aspect-ratio: 1; }
+    .intro-snake-body:nth-child(2) { top: 55%; left: 34%; border-color: #00ffff; box-shadow: 0 0 12px #00ffff, inset 0 0 12px rgba(0, 255, 255, .45); animation-delay: -.35s; }
+    .intro-snake-body:nth-child(3) { top: 43%; left: 53%; border-color: #00ffff; box-shadow: 0 0 12px #00ffff, inset 0 0 12px rgba(0, 255, 255, .45); animation-delay: -.7s; }
+    .intro-snake-body:nth-child(4) { top: 31%; left: 53%; animation-delay: -1.05s; }
+    .intro-snake-head { top: 9%; left: 50%; width: 31%; height: 31%; clip-path: polygon(18% 0, 82% 0, 100% 50%, 82% 100%, 18% 100%, 0 50%); }
+    .intro-snake-eye { position: absolute; top: 40%; left: 27%; width: 12%; height: 12%; border-radius: 50%; background: #ff00ff; box-shadow: 0 0 8px #ff00ff; }
+    .intro-snake-eye + .intro-snake-eye { left: 56%; }
+    .intro-snake-eye.wink { animation: cyber-eye-wink 4s steps(1, end) infinite; }
+    @keyframes cyber-eye-wink {
+      0%, 91%, 95%, 100% { transform: scaleY(1); }
+      92%, 94% { transform: scaleY(.12); }
+    }
+
+    @keyframes character-float {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-9px) rotate(1deg); }
+    }
+
+    .character-stage[data-slide="2"] .intro-snake-body,
+    .character-stage[data-slide="2"] .intro-snake-head { animation: character-grow 2.4s ease-in-out infinite; }
+
+    @keyframes character-grow {
+      0%, 100% { transform: translateY(0) scale(1); }
+      45% { transform: translateY(-5px) scale(1.035, 1.015); }
+      70% { transform: translateY(0) scale(1.015, 1.005); }
+    }
+
+    .food-demo {
+      position: absolute;
+      top: 21%;
+      right: 13%;
+      width: 21px;
+      height: 21px;
+      border: 3px solid rgba(255, 255, 255, .9);
+      border-radius: 50%;
+      background: #ff7188;
+      box-shadow: 0 4px 12px rgba(232, 91, 112, .32), 0 0 0 5px rgba(255, 113, 136, .12);
+      opacity: 0;
+      animation: food-bob 2.4s ease-in-out infinite;
+    }
+
+    .food-demo::after {
+      position: absolute;
+      top: -7px;
+      right: -4px;
+      width: 9px;
+      height: 6px;
+      border-radius: 9px 1px 9px 1px;
+      background: #55aa70;
+      content: "";
+      transform: rotate(-30deg);
+    }
+
+    .character-stage[data-slide="2"] .food-demo {
+      opacity: 1;
+      animation: food-approach 2.4s ease-in-out infinite;
+    }
+
+    @keyframes food-bob {
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes food-approach {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 1; }
+      52% { transform: translate(-45px, 36px) scale(.45); opacity: .35; }
+      65% { transform: translate(-45px, 36px) scale(.2); opacity: 0; }
+      82% { transform: translate(0, 0) scale(1); opacity: 0; }
     }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 12px;
       margin-top: 28px;
     }
@@ -127,70 +231,466 @@
       min-width: 132px;
       min-height: 48px;
       padding: 0 20px;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(124, 183, 201, .35);
       border-radius: 13px;
-      background: #162235;
+      background: linear-gradient(145deg, rgba(255, 255, 255, .96), rgba(232, 246, 251, .9));
+      box-shadow: 0 4px 10px rgba(79, 145, 176, .09), inset 0 1px 0 #fff;
       color: var(--text);
       cursor: pointer;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
     }
 
     .actions button:hover:not(:disabled) {
-      transform: translateY(-1px);
-      border-color: rgba(166, 255, 95, .55);
-      background: #1c2b40;
+      transform: translateY(-2px);
+      border-color: rgba(97, 174, 196, .56);
+      background: linear-gradient(145deg, #fff, #e5f7f7);
+      box-shadow: 0 7px 14px rgba(79, 145, 176, .13), inset 0 1px 0 #fff;
     }
 
     .actions button:focus-visible,
     .language-picker:focus-visible {
-      outline: 2px solid var(--green);
+      outline: 2px solid #4eaa91;
       outline-offset: 3px;
     }
 
     .actions .continue {
-      border-color: transparent;
-      background: linear-gradient(110deg, #b7ff66, #68f1bd 58%, #58e9db);
-      color: #071a18;
+      border-color: rgba(255, 255, 255, .78);
+      background: linear-gradient(120deg, #b6f1d7, #a8e8ee);
+      box-shadow: 0 7px 17px rgba(93, 179, 174, .22), inset 0 1px 0 rgba(255, 255, 255, .8);
+      color: #285b5b;
       font-weight: 750;
     }
 
     .actions button:disabled {
-      border-color: rgba(167, 194, 224, .12);
-      background: #3b4655;
-      color: #9aa5b4;
+      border-color: rgba(124, 183, 201, .18);
+      background: rgba(230, 243, 248, .78);
+      color: #87a0aa;
       cursor: not-allowed;
       opacity: .65;
       transform: none;
     }
 
+    .skip-button {
+      position: absolute;
+      right: 22px;
+      bottom: 16px;
+      padding: 7px 10px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #6d8b99;
+      font-size: 13px;
+      cursor: pointer;
+      transition: color .18s ease, background .18s ease;
+    }
+
+    .skip-button:hover { background: rgba(255, 255, 255, .62); color: #31576a; }
+    .skip-button:focus-visible { outline: 2px solid #4eaa91; outline-offset: 2px; }
+
     @media (max-width: 540px) {
       body { padding: 12px; }
 
       .intro {
-        min-height: 86vh;
-        min-height: 86dvh;
-        padding: 76px 20px 26px;
-        border-radius: 22px;
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(130px, 23vh) 1fr;
+        gap: 4px;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 0;
+        border-radius: 0;
       }
+
+      .character-stage { width: min(100%, 210px); height: 100%; justify-self: center; }
+      .slide { padding-top: 0; text-align: center; }
+      .eyebrow { margin-bottom: 10px; font-size: 11px; }
+      h1 { margin-bottom: 14px; }
+      .description { min-height: 0; }
+      .page-number { margin-top: 16px; }
 
       .language-picker {
         top: 14px;
         right: 14px;
       }
 
-      .actions { gap: 8px; }
+      .actions { justify-content: center; gap: 8px; margin-top: 18px; }
 
       .actions button {
         flex: 1 1 120px;
         min-width: 0;
         padding-inline: 12px;
       }
+
+      .skip-button { right: 14px; bottom: 10px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
-      *::after { transition-duration: .01ms !important; }
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    :root {
+      color-scheme: dark;
+      --text: #d8ffff;
+      --muted: #9eb6c5;
+      --green: #00ff00;
+      --cyan: #00ffff;
+      --pink: #ff00ff;
+      --line: rgba(0, 255, 255, .38);
+    }
+
+    body {
+      color: var(--text);
+      font-family: Consolas, "Microsoft YaHei UI", "Microsoft YaHei", monospace;
+    }
+
+    body::after {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(0, 255, 255, .025) 4px);
+      content: "";
+      pointer-events: none;
+    }
+
+    .language-picker,
+    .actions button {
+      border: 1px solid rgba(0, 255, 255, .55);
+      border-radius: 2px;
+      background: rgba(0, 255, 255, .045);
+      color: var(--cyan);
+      font-family: inherit;
+      box-shadow: 0 0 10px rgba(0, 255, 255, .12), inset 0 0 10px rgba(0, 255, 255, .035);
+    }
+
+    .actions button:hover:not(:disabled) {
+      border-color: var(--cyan);
+      background: rgba(0, 255, 255, .16);
+      color: #fff;
+      box-shadow: 0 0 13px var(--cyan), 0 0 30px rgba(0, 255, 255, .45);
+    }
+
+    .actions .continue {
+      border-color: var(--green);
+      background: rgba(0, 255, 0, .08);
+      color: var(--green);
+      box-shadow: 0 0 12px rgba(0, 255, 0, .22);
+    }
+
+    .actions button:disabled {
+      border-color: rgba(0, 255, 255, .16);
+      background: rgba(0, 255, 255, .025);
+      color: #667d8d;
+    }
+
+    .eyebrow { color: var(--cyan); text-shadow: 0 0 10px rgba(0, 255, 255, .55); }
+    h1 { color: var(--green); text-shadow: 0 0 12px rgba(0, 255, 0, .52); }
+    .description,
+    .page-number { color: var(--muted); }
+
+    .character-stage::before,
+    .character-stage::after { border-color: rgba(0, 255, 255, .22); }
+    .intro-snake-body,
+    .intro-snake-head { border-color: var(--green); background: rgba(0, 255, 0, .28); box-shadow: 0 0 12px var(--green), inset 0 0 12px rgba(0, 255, 0, .45); }
+    .intro-snake-body:nth-child(2),
+    .intro-snake-body:nth-child(3) { border-color: var(--cyan); box-shadow: 0 0 12px var(--cyan), inset 0 0 12px rgba(0, 255, 255, .45); }
+    .intro-snake-head { border-color: var(--green); }
+    .intro-snake-eye { background: var(--pink); box-shadow: 0 0 8px var(--pink); }
+
+    .skip-button {
+      border-radius: 2px;
+      color: #718b9a;
+      font-family: inherit;
+    }
+    .skip-button:hover { background: rgba(0, 255, 255, .07); color: var(--cyan); }
+
+    .intro[hidden] { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::after { background: none; }
+    }
+
+    body {
+      overflow: auto;
+      background: #0a0b10;
+      color: var(--text);
+    }
+
+    .intro {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      align-items: stretch;
+      gap: clamp(18px, 3vh, 32px);
+      min-height: 100vh;
+      min-height: 100dvh;
+      height: auto;
+      padding: clamp(26px, 5vh, 54px) clamp(20px, 6vw, 84px) clamp(20px, 4vh, 38px);
+      background: url("pptbackground.png") center/cover no-repeat fixed;
+      isolation: isolate;
+    }
+
+    .intro::before {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(5, 9, 18, .52), rgba(5, 9, 18, .78));
+      content: "";
+      pointer-events: none;
+    }
+
+    .language-picker {
+      z-index: 2;
+      border: 1px solid rgba(0, 255, 255, .42);
+      border-radius: 3px;
+      background: rgba(5, 12, 22, .82);
+      box-shadow: 0 0 12px rgba(0, 255, 255, .1);
+      color: var(--cyan);
+    }
+
+    .slide {
+      width: min(100%, 1000px);
+      justify-self: center;
+      align-self: center;
+      padding: 0 clamp(58px, 9vw, 110px);
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin-bottom: 12px;
+      color: var(--cyan);
+      font-size: 12px;
+      letter-spacing: .2em;
+      text-shadow: 0 0 10px rgba(0, 255, 255, .45);
+    }
+
+    h1 {
+      margin-bottom: 0;
+      color: var(--green);
+      font-family: Consolas, "Microsoft YaHei UI", "Microsoft YaHei", monospace;
+      font-size: clamp(32px, 5.4vw, 58px);
+      line-height: 1.15;
+      letter-spacing: -.035em;
+      text-shadow: 0 0 10px rgba(0, 255, 0, .4), 0 0 24px rgba(0, 255, 0, .18);
+    }
+
+    .presentation-content {
+      display: grid;
+      width: min(100%, 1120px);
+      min-height: 0;
+      align-self: stretch;
+      justify-self: center;
+      align-items: center;
+    }
+
+    .tutorial-panel {
+      display: grid;
+      grid-template-columns: minmax(150px, .38fr) minmax(0, 1fr);
+      align-items: center;
+      gap: clamp(18px, 4vw, 44px);
+      min-height: 220px;
+      padding: clamp(22px, 4vw, 42px);
+      border: 1px solid rgba(0, 255, 255, .34);
+      border-radius: 14px;
+      background: rgba(5, 12, 22, .82);
+      box-shadow: 0 0 20px rgba(0, 255, 255, .08), inset 0 0 24px rgba(0, 255, 255, .025);
+      backdrop-filter: blur(7px);
+    }
+
+    .character-stage {
+      width: min(100%, 200px);
+      max-width: 200px;
+      justify-self: center;
+    }
+
+    .description {
+      min-height: 0;
+      margin: 0;
+      color: #d5e1ed;
+      font-size: clamp(16px, 2vw, 20px);
+      line-height: 1.85;
+      text-align: left;
+      overflow-wrap: anywhere;
+    }
+
+    .tutorial-panel[hidden],
+    .project-cards[hidden] { display: none; }
+    body[data-slide-type="project"] .project-cards:not([hidden]) {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: stretch;
+      gap: clamp(12px, 2vw, 22px);
+    }
+
+    .project-card {
+      min-width: 0;
+      padding: clamp(20px, 3vw, 32px);
+      border: 1px solid rgba(0, 255, 255, .38);
+      border-radius: 14px;
+      background: rgba(5, 12, 22, .84);
+      box-shadow: 0 0 16px rgba(0, 255, 255, .08), inset 0 0 20px rgba(0, 255, 255, .025);
+      backdrop-filter: blur(7px);
+      text-align: left;
+    }
+
+    .project-card h2 {
+      margin: 0 0 14px;
+      color: var(--cyan);
+      font-size: clamp(17px, 2vw, 21px);
+      line-height: 1.45;
+      text-align: left;
+      text-shadow: 0 0 9px rgba(0, 255, 255, .24);
+    }
+
+    .project-card p,
+    .project-card li {
+      margin: 0;
+      color: #d5e1ed;
+      font-size: clamp(13px, 1.45vw, 15px);
+      line-height: 1.75;
+      text-align: left;
+      overflow-wrap: anywhere;
+    }
+
+    .project-card ul {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+      padding-left: 19px;
+    }
+
+    [data-intro-locale] { display: none; }
+    html[lang="en"] [data-intro-locale="en"],
+    html[lang="zh-CN"] [data-intro-locale="zh"],
+    html[lang="ko-KR"] [data-intro-locale="ko"] { display: initial; }
+    .project-card li[data-intro-locale] { display: none; }
+    html[lang="en"] .project-card li[data-intro-locale="en"],
+    html[lang="zh-CN"] .project-card li[data-intro-locale="zh"],
+    html[lang="ko-KR"] .project-card li[data-intro-locale="ko"] { display: list-item; }
+
+    .presentation-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      width: min(100%, 1120px);
+      justify-self: center;
+    }
+
+    .page-number {
+      flex: 0 0 auto;
+      margin: 0;
+      color: #a6bbca;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .actions {
+      justify-content: flex-end;
+      gap: 9px;
+      margin: 0;
+    }
+
+    .actions button {
+      min-width: 0;
+      min-height: 42px;
+      padding: 0 15px;
+      border: 1px solid rgba(0, 255, 255, .42);
+      border-radius: 4px;
+      background: rgba(0, 255, 255, .045);
+      box-shadow: 0 0 10px rgba(0, 255, 255, .09);
+      color: var(--cyan);
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .actions button:hover:not(:disabled) {
+      border-color: var(--cyan);
+      background: rgba(0, 255, 255, .13);
+      box-shadow: 0 0 14px rgba(0, 255, 255, .28);
+    }
+
+    .actions .continue {
+      border-color: rgba(0, 255, 0, .7);
+      background: rgba(0, 255, 0, .08);
+      color: var(--green);
+    }
+
+    .actions button:disabled {
+      border-color: rgba(0, 255, 255, .16);
+      background: rgba(0, 255, 255, .02);
+      color: #8296a4;
+    }
+
+    .skip-button {
+      position: static;
+      min-height: 42px;
+      padding: 0 10px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      color: #a6bbca;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .skip-button:hover { background: rgba(0, 255, 255, .06); color: var(--cyan); }
+
+    @media (max-width: 760px) {
+      .intro {
+        gap: 18px;
+        padding: 76px 18px 20px;
+      }
+
+      .slide { padding: 0 10px; }
+
+      body[data-slide-type="project"] .project-cards:not([hidden]) {
+        grid-template-columns: 1fr;
+      }
+
+      .project-card { padding: 18px 20px; }
+      .project-card h2 { margin-bottom: 8px; }
+      .project-card ul { gap: 5px; }
+    }
+
+    @media (max-width: 540px) {
+      body { padding: 0; }
+
+      .intro {
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        gap: 16px;
+        padding: 72px 14px 14px;
+      }
+
+      .language-picker { top: 14px; right: 14px; min-height: 36px; }
+      .slide { padding: 0 4px; text-align: center; }
+      h1 { font-size: clamp(28px, 8vw, 40px); }
+      .tutorial-panel {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+        min-height: 0;
+        padding: 16px 18px 20px;
+      }
+
+      .character-stage { width: min(42vw, 148px); }
+      .presentation-footer { align-items: flex-end; gap: 8px; }
+      .page-number { padding-bottom: 10px; font-size: 11px; }
+      .actions { flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+      .actions button { min-height: 38px; padding: 0 9px; font-size: 12px; }
+      .skip-button { min-height: 34px; padding: 0 7px; font-size: 12px; }
+      .project-card { padding: 15px 16px; }
+      .project-card p,
+      .project-card li { font-size: 13px; }
+    }
+
+    @media (max-width: 380px) {
+      .presentation-footer { align-items: stretch; flex-direction: column; }
+      .page-number { padding: 0; }
+      .actions { justify-content: flex-start; }
     }
   </style>
 </head>
@@ -206,20 +706,93 @@
     <section class="slide" aria-describedby="slideDescription">
       <p class="eyebrow" id="introLabel"></p>
       <h1 id="slideTitle"></h1>
-      <p class="description" id="slideDescription" aria-live="polite"></p>
+    </section>
+
+    <section class="presentation-content" aria-describedby="slideDescription">
+      <div class="tutorial-panel">
+        <div class="character-stage" id="characterStage" data-slide="1" aria-hidden="true">
+          <span class="intro-snake-body"></span>
+          <span class="intro-snake-body"></span>
+          <span class="intro-snake-body"></span>
+          <span class="intro-snake-body"></span>
+          <span class="intro-snake-head"><i class="intro-snake-eye wink"></i><i class="intro-snake-eye"></i></span>
+          <span class="food-demo"></span>
+        </div>
+        <p class="description" id="slideDescription" aria-live="polite"></p>
+      </div>
+
+      <div class="project-cards" id="projectCards" hidden>
+        <article class="project-card">
+          <h2>
+            <span data-intro-locale="en">Project purpose</span>
+            <span data-intro-locale="zh">项目目的</span>
+            <span data-intro-locale="ko">프로젝트 목적</span>
+          </h2>
+          <p>
+            <span data-intro-locale="en">Recreate the classic arcade challenge: guide the snake, plan each route, and aim for a new personal best.</span>
+            <span data-intro-locale="zh">重现经典街机贪吃蛇体验：操控小蛇、规划移动路线，在每一局中挑战更高纪录。</span>
+            <span data-intro-locale="ko">클래식 아케이드 게임을 재현합니다. 뱀을 조종하고 경로를 계획해 개인 최고 기록에 도전하세요.</span>
+          </p>
+        </article>
+        <article class="project-card">
+          <h2>
+            <span data-intro-locale="en">Main features</span>
+            <span data-intro-locale="zh">主要功能</span>
+            <span data-intro-locale="ko">주요 기능</span>
+          </h2>
+          <ul>
+            <li data-intro-locale="en">Start, pause, resume, and restart; choose a difficulty.</li>
+            <li data-intro-locale="zh">支持开始、暂停、继续、重开与难度选择。</li>
+            <li data-intro-locale="ko">시작, 일시정지, 계속하기, 다시 시작과 난이도 선택을 지원합니다.</li>
+            <li data-intro-locale="en">Collect random food to grow and score; avoid walls and your own body.</li>
+            <li data-intro-locale="zh">随机食物会让蛇身增长并加分；撞到墙壁或自身会结束游戏。</li>
+            <li data-intro-locale="ko">무작위 먹이를 먹어 성장하고 점수를 얻으세요. 벽과 자신의 몸에 부딪히지 않도록 하세요.</li>
+            <li data-intro-locale="en">Best scores are saved locally; keyboard and touch controls are available.</li>
+            <li data-intro-locale="zh">支持键盘与触屏操作，最高分保存在本机。</li>
+            <li data-intro-locale="ko">키보드와 터치 조작을 지원하며 최고 기록을 기기에 저장합니다.</li>
+          </ul>
+        </article>
+        <article class="project-card">
+          <h2>
+            <span data-intro-locale="en">Development</span>
+            <span data-intro-locale="zh">开发内容</span>
+            <span data-intro-locale="ko">개발 내용</span>
+          </h2>
+          <ul>
+            <li data-intro-locale="en">Built with native HTML, CSS, and JavaScript.</li>
+            <li data-intro-locale="zh">使用原生 HTML、CSS 和 JavaScript 开发。</li>
+            <li data-intro-locale="ko">순수 HTML, CSS, JavaScript로 제작했습니다.</li>
+            <li data-intro-locale="en">Canvas renders the board, snake, and food; DOM builds menus and controls.</li>
+            <li data-intro-locale="zh">Canvas 绘制棋盘、蛇与食物；DOM 构建菜单和交互界面。</li>
+            <li data-intro-locale="ko">Canvas가 게임 보드와 뱀, 먹이를 그리고 DOM이 메뉴와 조작 화면을 구성합니다.</li>
+            <li data-intro-locale="en">Includes menu, tutorial, difficulty, gameplay, pause, results, leaderboard, and settings.</li>
+            <li data-intro-locale="zh">包含主菜单、教程、难度选择、游戏、暂停、结算、排行榜和设置。</li>
+            <li data-intro-locale="ko">메뉴, 튜토리얼, 난이도, 플레이, 일시정지, 결과, 랭킹, 설정 화면을 제공합니다.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <footer class="presentation-footer">
       <p class="page-number" id="pageNumber" aria-live="polite"></p>
       <nav class="actions" aria-label="Presentation controls">
         <button id="previousButton" type="button"></button>
         <button id="nextButton" type="button"></button>
         <button class="continue" id="continueButton" type="button" disabled></button>
+        <button class="skip-button" id="skipButton" type="button"></button>
       </nav>
-    </section>
+    </footer>
   </main>
 
   <script>
     (() => {
       const supportedLanguages = ["en", "zh", "ko"];
       const query = new URLSearchParams(window.location.search);
+      const projectMode = query.get("mode") === "project";
+      const startFlow = query.get("flow") === "start";
+      document.body.dataset.pageMode = projectMode ? "project" : "tutorial";
+      document.getElementById("projectCards").hidden = !projectMode;
+
       const serializedTranslations = query.get("translations");
 
       // Load only the selected strings supplied from index.html's translation dictionary.
@@ -240,11 +813,16 @@
       }
 
       const slides = [
-        { title: "introPptSlide1Title", body: "introPptSlide1Body" },
-        { title: "introPptSlide2Title", body: "introPptSlide2Body" },
-        { title: "introPptSlide3Title", body: "introPptSlide3Body" }
+        { type: "project", title: "projectIntroSlide1Title", body: "projectIntroSlide1Body" },
+        { type: "project", title: "projectIntroSlide2Title", body: "projectIntroSlide2Body" },
+        { type: "project", title: "projectIntroSlide3Title", body: "projectIntroSlide3Body" },
+        { type: "tutorial", title: "introPptSlide1Title", body: "introPptSlide1Body" },
+        { type: "tutorial", title: "introPptSlide2Title", body: "introPptSlide2Body" },
+        { type: "tutorial", title: "introPptSlide3Title", body: "introPptSlide3Body" }
       ];
-      let slideIndex = 0;
+      let currentPage = 0;
+      const maxPage = slides.length;
+      let isPptOpen = true;
 
       const languageSelect = document.getElementById("languageSelect");
       const languageLabel = document.getElementById("languageLabel");
@@ -255,6 +833,10 @@
       const previousButton = document.getElementById("previousButton");
       const nextButton = document.getElementById("nextButton");
       const continueButton = document.getElementById("continueButton");
+      const skipButton = document.getElementById("skipButton");
+      const characterStage = document.getElementById("characterStage");
+      const tutorialPanel = document.querySelector(".tutorial-panel");
+      const projectCards = document.getElementById("projectCards");
 
       // Use the same key lookup and placeholder interpolation convention as index.html.
       function translate(key, values = {}) {
@@ -269,44 +851,65 @@
       }
 
       function refreshLanguage() {
-        const slide = slides[slideIndex];
+        const slide = slides[currentPage];
 
         document.documentElement.lang =
           language === "zh" ? "zh-CN" : language === "ko" ? "ko-KR" : "en";
+        document.body.dataset.slideType = slide.type;
         document.title = translate("introPptLabel");
         languageLabel.textContent = translate("languageLabel");
         introLabel.textContent = translate("introPptLabel");
         slideTitle.textContent = translate(slide.title);
         slideDescription.textContent = translate(slide.body);
         pageNumber.textContent = translate("introPptPage", {
-          current: slideIndex + 1,
-          total: slides.length
+          current: currentPage + 1,
+          total: maxPage
         });
         previousButton.textContent = translate("introPptPrevious");
         nextButton.textContent = translate("introPptNext");
-        continueButton.textContent = translate("introPptContinue");
+        continueButton.textContent = projectMode && !startFlow
+          ? translate("projectIntroDone")
+          : translate("introPptContinue");
+        skipButton.textContent = translate("introPptSkip");
+        characterStage.dataset.slide = String(currentPage + 1);
+        tutorialPanel.hidden = slide.type !== "tutorial";
+        projectCards.hidden = slide.type !== "project";
         languageSelect.value = language;
 
-        previousButton.disabled = slideIndex === 0;
-        nextButton.disabled = slideIndex === slides.length - 1;
-        continueButton.disabled = slideIndex !== slides.length - 1;
+        previousButton.disabled = currentPage === 0;
+        nextButton.disabled = currentPage === maxPage - 1;
+        continueButton.disabled = currentPage !== maxPage - 1;
       }
 
       function showPreviousSlide() {
-        if (slideIndex === 0) return;
-        slideIndex -= 1;
+        if (currentPage === 0) return;
+        currentPage -= 1;
         refreshLanguage();
       }
 
       function showNextSlide() {
-        if (slideIndex >= slides.length - 1) return;
-        slideIndex += 1;
+        if (currentPage >= maxPage - 1) {
+          launchGameFromPresentation();
+          return;
+        }
+
+        currentPage += 1;
         refreshLanguage();
       }
 
       function continueToLevelSelect() {
         // Enforce the last-slide requirement even if the handler is invoked programmatically.
-        if (slideIndex !== slides.length - 1) return;
+        if (currentPage !== maxPage - 1) return;
+
+        isPptOpen = false;
+        if (projectMode && !startFlow) {
+          if (query.get("embedded") === "1") {
+            window.parent.postMessage({ type: "game-project:close" }, "*");
+          } else {
+            window.location.assign(new URL("./index.html", window.location.href).href);
+          }
+          return;
+        }
 
         if (query.get("embedded") === "1") {
           // In the game iframe, notify the parent to close without navigating or selecting a level.
@@ -316,6 +919,43 @@
 
         const indexUrl = new URL("./index.html", window.location.href);
         indexUrl.searchParams.set("openLevelSelect", "1");
+        indexUrl.searchParams.set("lang", language);
+        window.location.assign(indexUrl.href);
+      }
+
+      function skipToLevelSelect() {
+        isPptOpen = false;
+        if (projectMode && !startFlow) {
+          if (query.get("embedded") === "1") {
+            window.parent.postMessage({ type: "game-project:close" }, "*");
+          } else {
+            window.location.assign(new URL("./index.html", window.location.href).href);
+          }
+          return;
+        }
+
+        if (query.get("embedded") === "1") {
+          window.parent.postMessage({ type: "game-intro:skip" }, "*");
+          return;
+        }
+
+        const indexUrl = new URL("./index.html", window.location.href);
+        indexUrl.searchParams.set("openLevelSelect", "1");
+        indexUrl.searchParams.set("lang", language);
+        window.location.assign(indexUrl.href);
+      }
+
+      function launchGameFromPresentation() {
+        if (!isPptOpen) return;
+        isPptOpen = false;
+
+        if (query.get("embedded") === "1") {
+          window.parent.postMessage({ type: "game-intro:start-game" }, "*");
+          return;
+        }
+
+        const indexUrl = new URL("./index.html", window.location.href);
+        indexUrl.searchParams.set("startGame", "1");
         indexUrl.searchParams.set("lang", language);
         window.location.assign(indexUrl.href);
       }
@@ -339,8 +979,39 @@
       previousButton.addEventListener("click", showPreviousSlide);
       nextButton.addEventListener("click", showNextSlide);
       continueButton.addEventListener("click", continueToLevelSelect);
-
+      skipButton.addEventListener("click", skipToLevelSelect);
       refreshLanguage();
+
+      // Keep keyboard navigation scoped to the active presentation and reuse its guarded page handlers.
+      window.addEventListener("keydown", (event) => {
+        if (
+          !isPptOpen ||
+          document.visibilityState !== "visible" ||
+          !document.hasFocus() ||
+          document.querySelector(".intro").hidden ||
+          event.altKey ||
+          event.ctrlKey ||
+          event.metaKey ||
+          event.shiftKey
+        ) {
+          return;
+        }
+
+        if (event.target instanceof Element && event.target.closest("input, select, textarea, [contenteditable='true']")) {
+          return;
+        }
+
+        if (event.key === "a" || event.key === "A" || event.key === "ArrowLeft") {
+          event.preventDefault();
+          if (currentPage > 0) showPreviousSlide();
+          return;
+        }
+
+        if (event.key === "d" || event.key === "D" || event.key === "ArrowRight") {
+          event.preventDefault();
+          showNextSlide();
+        }
+      });
     })();
   </script>
 </body>

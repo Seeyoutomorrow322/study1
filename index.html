@@ -7,16 +7,17 @@
   <title>Snake · Neon Arcade</title>
   <style>
     :root {
-      color-scheme: light;
+      color-scheme: dark;
       --viewport-height: 100vh;
-      --bg: #080d17;
-      --panel: #101827;
-      --panel-light: #162235;
-      --text: #edf5ff;
-      --muted: #8998ae;
-      --green: #a6ff5f;
-      --cyan: #54e6d2;
-      --line: rgba(167, 194, 224, .12);
+      --bg: #0a0b10;
+      --panel: #10131e;
+      --panel-light: #151d2b;
+      --text: #d8ffff;
+      --muted: #8ca4b8;
+      --green: #00ff00;
+      --cyan: #00ffff;
+      --pink: #ff00ff;
+      --line: rgba(0, 255, 255, .34);
     }
 
     @supports (height: 100dvh) {
@@ -232,10 +233,10 @@
     .game[data-active-screen="menu"] .board-shell {
       width: 100%;
       padding: 0;
-      border-color: rgba(104, 238, 216, .19);
+      border-color: transparent;
       border-radius: 28px;
-      background: linear-gradient(135deg, rgba(18, 34, 50, .94), rgba(9, 16, 30, .98) 58%, rgba(25, 17, 48, .95));
-      box-shadow: 0 32px 90px rgba(0, 0, 0, .42), 0 0 75px rgba(70, 232, 207, .075), inset 0 1px rgba(255, 255, 255, .055);
+      background: none;
+      box-shadow: none;
     }
 
     .board-wrap {
@@ -311,12 +312,7 @@
       gap: clamp(20px, 4vw, 58px);
       max-height: none;
       overflow: visible;
-      animation: hero-enter .75s cubic-bezier(.2, .75, .25, 1) both;
-    }
-
-    @keyframes hero-enter {
-      from { opacity: 0; transform: translateY(14px); }
-      to { opacity: 1; transform: translateY(0); }
+      animation: none;
     }
 
     .menu-copy { position: relative; z-index: 1; }
@@ -350,15 +346,13 @@
     .game[data-active-screen="menu"] .overlay-screen[data-screen="menu"] h2 {
       max-width: 540px;
       margin: 0 0 14px;
-      background: linear-gradient(100deg, #f4fff9 4%, #aaffdf 48%, #9beeff 100%);
-      background-clip: text;
-      color: transparent;
+      background: none;
+      color: var(--neon-green);
       font-size: clamp(42px, 6.6vw, 76px);
       font-weight: 850;
       letter-spacing: -.065em;
       line-height: .98;
-      text-shadow: 0 0 38px rgba(94, 244, 211, .11);
-      -webkit-background-clip: text;
+      text-shadow: 0 0 9px rgba(0, 255, 0, .75), 0 0 28px rgba(0, 255, 0, .34);
     }
 
     .game[data-active-screen="menu"] .overlay-screen[data-screen="menu"] p {
@@ -387,14 +381,15 @@
     }
 
     .game[data-active-screen="menu"] .primary-button {
-      color: #071a18;
-      background: linear-gradient(110deg, #b7ff66, #68f1bd 58%, #58e9db);
-      box-shadow: 0 10px 34px rgba(94, 244, 177, .24), inset 0 1px rgba(255, 255, 255, .55);
+      color: var(--neon-green);
+      background: rgba(0, 255, 0, .035);
+      box-shadow: 0 0 12px rgba(0, 255, 255, .12), inset 0 0 10px rgba(0, 255, 255, .035);
     }
 
     .game[data-active-screen="menu"] .primary-button:hover {
-      filter: brightness(1.08);
-      box-shadow: 0 13px 42px rgba(94, 244, 177, .32), inset 0 1px rgba(255, 255, 255, .65);
+      filter: none;
+      background: rgba(0, 255, 0, .14);
+      box-shadow: 0 0 12px var(--neon-cyan), 0 0 32px rgba(0, 255, 255, .62), inset 0 0 18px rgba(0, 255, 255, .2);
       transform: translateY(-2px);
     }
 
@@ -402,106 +397,6 @@
       border-color: rgba(161, 197, 222, .2);
       background: rgba(16, 28, 43, .72);
       backdrop-filter: blur(12px);
-    }
-
-    .menu-art {
-      position: relative;
-      display: grid;
-      min-width: 0;
-      aspect-ratio: 1;
-      place-items: center;
-      isolation: isolate;
-    }
-
-    .menu-art::before, .menu-art::after {
-      position: absolute;
-      z-index: -1;
-      border: 1px solid rgba(111, 227, 224, .13);
-      border-radius: 50%;
-      content: "";
-    }
-
-    .menu-art::before { inset: 8%; animation: orbit-spin 32s linear infinite; }
-    .menu-art::after { inset: 19%; border-style: dashed; border-color: rgba(164, 125, 255, .2); animation: orbit-spin 45s linear infinite reverse; }
-
-    @keyframes orbit-spin { to { transform: rotate(360deg); } }
-
-    .menu-art svg {
-      width: 94%;
-      overflow: visible;
-      filter: drop-shadow(0 0 20px rgba(83, 245, 206, .3));
-      animation: art-float 6.4s ease-in-out infinite;
-    }
-
-    @keyframes art-float {
-      0%, 100% { transform: translate3d(0, 0, 0) rotate(-1deg) scale(1); }
-      28% { transform: translate3d(2px, -5px, 0) rotate(.5deg) scale(1.018); }
-      56% { transform: translate3d(-1px, -8px, 0) rotate(1deg) scale(1.028); }
-      82% { transform: translate3d(-2px, -3px, 0) rotate(-.4deg) scale(1.012); }
-    }
-
-    .snake-buddy {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: buddy-wiggle 5.2s ease-in-out infinite;
-    }
-
-    @keyframes buddy-wiggle {
-      0%, 100% { transform: translate(0, 0) rotate(-.5deg) scaleY(1); }
-      24% { transform: translate(1px, -1px) rotate(.45deg) scaleY(1.012); }
-      52% { transform: translate(-1px, 1px) rotate(0) scaleY(.99); }
-      76% { transform: translate(1px, 0) rotate(-.35deg) scaleY(1.008); }
-    }
-
-    .snake-glimmer {
-      animation: glimmer-flow 5.2s linear infinite;
-    }
-
-    @keyframes glimmer-flow {
-      to { stroke-dashoffset: -26; }
-    }
-
-    .buddy-head {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: head-bobble 3.6s ease-in-out infinite;
-    }
-
-    @keyframes head-bobble {
-      0%, 100% { transform: rotate(0) translateY(0) scale(1); }
-      32% { transform: rotate(2deg) translateY(-1px) scale(1.012); }
-      68% { transform: rotate(-1.5deg) translateY(1px) scale(.998); }
-    }
-
-    .buddy-sparkle {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: sparkle-pop 1.6s ease-in-out infinite;
-    }
-
-    .buddy-sparkle:nth-of-type(2n) { animation-delay: -.8s; }
-
-    @keyframes sparkle-pop {
-      0%, 100% { opacity: .42; transform: scale(.72) rotate(0); }
-      50% { opacity: 1; transform: scale(1.16) rotate(18deg); }
-    }
-
-    .menu-food {
-      position: absolute;
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      box-shadow: 0 0 23px currentColor;
-      animation: food-drift 2.4s ease-in-out infinite;
-    }
-
-    .menu-food.berry { top: 15%; right: 17%; color: #ff7188; background: currentColor; }
-    .menu-food.gold { right: 6%; bottom: 31%; width: 10px; height: 10px; color: #ffd166; background: currentColor; animation-delay: -1.6s; }
-    .menu-food.crystal { bottom: 17%; left: 17%; width: 9px; height: 9px; border-radius: 2px; color: #6de8ff; background: currentColor; transform: rotate(45deg); animation-delay: -2.8s; }
-
-    @keyframes food-drift {
-      0%, 100% { translate: 0 0; scale: 1; }
-      50% { translate: 0 -15px; scale: 1.16; }
     }
 
     .primary-button {
@@ -754,17 +649,6 @@
       .game[data-active-screen="menu"] .overlay-screen[data-screen="menu"] p { margin-inline: auto; }
       .game[data-active-screen="menu"] .menu-eyebrow { margin-bottom: 13px; }
       .game[data-active-screen="menu"] .menu-actions { grid-template-columns: 1fr 1fr; justify-content: stretch; }
-      .menu-art {
-        position: absolute;
-        z-index: -1;
-        inset: 3% 0 auto;
-        width: min(100%, 380px);
-        margin: auto;
-        opacity: .34;
-        pointer-events: none;
-      }
-      .menu-art::before { inset: 13%; }
-      .menu-art::after { inset: 24%; }
       .menu-copy { padding-block: 30px; }
     }
 
@@ -894,7 +778,7 @@
       border: 0;
       border-radius: 0;
       background: transparent;
-      box-shadow: none;
+      box-shadow: 0 0 13px rgba(0, 255, 0, .2), inset 0 0 10px rgba(0, 255, 0, .04);
     }
     .game[data-active-screen="game"] .stat-label { color: #547466; }
     .game[data-active-screen="game"] .stat-value { color: #284d3f; }
@@ -954,7 +838,7 @@
       border-color: rgba(83, 177, 220, .24);
       background: rgba(121, 205, 240, .2);
       color: #398bb1;
-      box-shadow: none;
+      box-shadow: 0 0 14px var(--neon-green), 0 0 34px rgba(0, 255, 0, .55), inset 0 0 18px rgba(0, 255, 0, .2);
     }
     .game[data-active-screen="paused"] .primary-button,
     .game[data-active-screen="gameOver"] .primary-button,
@@ -1031,7 +915,7 @@
       padding: 0;
       border: 0;
       background: none;
-      box-shadow: none;
+      box-shadow: 0 0 12px rgba(255, 0, 255, .2);
     }
     .game[data-active-screen="levels"] .board-wrap,
     .game[data-active-screen="highScores"] .board-wrap {
@@ -1095,51 +979,7 @@
       overflow: visible;
       animation: none;
     }
-    .game[data-active-screen="menu"] .menu-copy,
-    .game[data-active-screen="menu"] .menu-art { display: none; }
-    .menu-artwork {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .menu-character {
-      position: absolute;
-      z-index: 1;
-      top: 18.3%;
-      left: 16.67%;
-      width: 66.66%;
-      height: 32.25%;
-      object-fit: contain;
-      pointer-events: none;
-      animation: menu-snake-float 3.8s ease-in-out infinite;
-    }
-    @keyframes menu-snake-float {
-      0%, 100% { transform: translateY(0) rotate(-.6deg); }
-      50% { transform: translateY(-6px) rotate(.6deg); }
-    }
-    .menu-artwork-button {
-      position: absolute;
-      z-index: 2;
-      left: 27.8%;
-      width: 44.4%;
-      height: 9%;
-      padding: 0;
-      border: 0;
-      border-radius: 10%;
-      background: transparent;
-      cursor: pointer;
-    }
-    .menu-artwork-button:hover { background: rgba(255, 255, 255, .08); }
-    .menu-artwork-button:focus-visible {
-      outline: 3px solid #fff;
-      outline-offset: 3px;
-    }
-    .menu-artwork-button[data-action="new-game"] { top: 48.7%; }
-    .menu-artwork-button[data-action="high-scores"] { top: 58.2%; }
-    .menu-artwork-button[data-action="settings"] { top: 67.8%; }
-    .menu-artwork-button[data-action="more-games"] { top: 77.3%; }
-
+    .game[data-active-screen="menu"] .menu-copy { display: none; }
     .top-actions .icon-button {
       position: relative;
       min-height: 42px;
@@ -1500,27 +1340,688 @@
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
     }
 
-    /* The opening menu intentionally exposes only the start action. */
-    .game[data-active-screen="menu"] .menu-artwork,
-    .game[data-active-screen="menu"] .menu-character,
-    .game[data-active-screen="menu"] .menu-tutorial-button,
-    .game[data-active-screen="menu"] .menu-artwork-button,
-    .game[data-active-screen="menu"] .menu-art {
-      display: none !important;
+    :root {
+      --neon-cyan: #00ffff;
+      --neon-green: #00ff00;
+      --neon-pink: #ff00ff;
+      --neon-red: #ff3158;
+      --cyber-panel: rgba(10, 14, 24, .96);
+      --cyber-border: rgba(0, 255, 255, .56);
     }
+
+    body,
+    body[data-active-screen] {
+      position: relative;
+      background: #0a0b10;
+      color: #d8ffff;
+      font-family: Consolas, "Microsoft YaHei UI", "Microsoft YaHei", monospace;
+    }
+
+    body::after {
+      position: fixed;
+      z-index: 100;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 3px,
+        rgba(0, 255, 255, .025) 4px
+      );
+      content: "";
+      pointer-events: none;
+    }
+
+    .sky-clouds { display: none; }
+
+    .brand-mark,
+    .stat,
+    .board-shell,
+    .overlay-card,
+    .icon-button,
+    .action-button,
+    .primary-button,
+    .secondary-button,
+    .level-choice,
+    .language-select,
+    .game-intro-launch,
+    .game-intro-close,
+    .dpad button {
+      border-radius: 2px;
+      border-color: var(--cyber-border);
+      box-shadow: 0 0 10px rgba(0, 255, 255, .12), inset 0 0 10px rgba(0, 255, 255, .035);
+    }
+
+    .game[data-active-screen="menu"] { width: min(100%, 1040px); }
+    .game[data-active-screen="menu"] .topbar { margin-bottom: 14px; }
+    .game[data-active-screen="menu"] .board-shell {
+      padding: 0;
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: linear-gradient(130deg, rgba(0, 255, 255, .07), rgba(255, 0, 255, .055), rgba(0, 255, 0, .04));
+      box-shadow: 0 0 28px rgba(0, 255, 255, .2), inset 0 0 24px rgba(0, 255, 255, .07);
+    }
+
+    .game[data-active-screen="menu"] .board-wrap {
+      min-height: 500px;
+      aspect-ratio: 1.72;
+      border-radius: 0;
+      background:
+        radial-gradient(ellipse at 73% 49%, rgba(0, 255, 255, .09), transparent 37%),
+        linear-gradient(145deg, #0a0b10, #0d111b 62%, #100b17);
+    }
+
     .game[data-active-screen="menu"] .menu-copy {
       position: absolute;
       inset: 0;
       display: grid;
-      place-items: center;
-      padding: 20px;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, .9fr);
+      grid-template-rows: auto auto 1fr auto;
+      align-content: center;
+      justify-items: start;
+      gap: 12px 24px;
+      padding: clamp(30px, 6vw, 70px);
     }
-    .game[data-active-screen="menu"] .menu-copy > :not(.menu-actions) { display: none; }
+
+    .game[data-active-screen="menu"] .menu-eyebrow {
+      grid-column: 1;
+      margin: 0;
+      color: var(--neon-cyan);
+      font-family: inherit;
+      letter-spacing: .18em;
+      text-shadow: none;
+    }
+
+    .game[data-active-screen="menu"] .menu-copy h2 {
+      grid-column: 1;
+      margin: 0;
+      color: var(--neon-green);
+      background: none;
+      font-family: inherit;
+      font-size: clamp(40px, 6vw, 72px);
+      letter-spacing: -.06em;
+      line-height: 1;
+      text-shadow: 0 0 9px rgba(0, 255, 0, .75), 0 0 28px rgba(0, 255, 0, .34);
+      -webkit-text-fill-color: currentColor;
+    }
+
+    .game[data-active-screen="menu"] .menu-copy > p {
+      grid-column: 1;
+      margin: 0;
+      color: #a8c3d1;
+      font-family: inherit;
+      line-height: 1.8;
+    }
+
     .game[data-active-screen="menu"] .menu-actions {
-      grid-template-columns: 1fr;
-      justify-items: center;
+      position: relative;
+      z-index: 2;
+      grid-column: 1;
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+      align-self: end;
+      width: min(100%, 430px);
+      gap: 10px;
+      margin-top: 12px;
     }
-    .game[data-active-screen="menu"] .menu-actions > button:not(#menuStartButton) { display: none; }
+
+    .game[data-active-screen="menu"] .menu-actions > button {
+      min-height: 50px;
+      padding-inline: 14px;
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: rgba(0, 255, 255, .035);
+      color: var(--neon-cyan);
+      font-family: inherit;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(0, 255, 255, .12), inset 0 0 10px rgba(0, 255, 255, .035);
+      cursor: pointer;
+    }
+
+    .game[data-active-screen="menu"] .menu-actions > button:hover {
+      background: rgba(0, 255, 255, .16);
+      color: #fff;
+      box-shadow: 0 0 12px var(--neon-cyan), 0 0 32px rgba(0, 255, 255, .62), inset 0 0 18px rgba(0, 255, 255, .2);
+    }
+
+    .game[data-active-screen="menu"] #menuArtworkStartButton {
+      border-color: var(--neon-green);
+      color: var(--neon-green);
+      box-shadow: 0 0 13px rgba(0, 255, 0, .2), inset 0 0 10px rgba(0, 255, 0, .04);
+    }
+
+    .game[data-active-screen="menu"] #menuArtworkStartButton:hover {
+      background: rgba(0, 255, 0, .14);
+      box-shadow: 0 0 14px var(--neon-green), 0 0 34px rgba(0, 255, 0, .55), inset 0 0 18px rgba(0, 255, 0, .2);
+    }
+
+    .game[data-active-screen="menu"] .menu-tutorial-button {
+      top: 14px;
+      left: auto;
+      right: 14px;
+      border: 1px solid var(--neon-pink);
+      border-radius: 2px;
+      background: rgba(255, 0, 255, .06);
+      color: var(--neon-pink);
+      box-shadow: 0 0 12px rgba(255, 0, 255, .2);
+    }
+
+    .game[data-active-screen="menu"] .menu-copy { z-index: 2; }
+    .game[data-active-screen="menu"] .menu-art {
+      position: absolute;
+      z-index: 1;
+      top: 14%;
+      right: 7%;
+      display: block;
+      width: min(42%, 390px);
+      aspect-ratio: 1;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .medusa-stage {
+      position: absolute;
+      inset: -4%;
+      display: grid;
+      place-items: center;
+      transform-origin: center;
+      animation: medusa-camera-push 12s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    .medusa-stage svg {
+      width: 112%;
+      max-width: none;
+      overflow: visible;
+      transform: translate3d(var(--medusa-shift-x, 0px), var(--medusa-shift-y, 0px), 0);
+      filter: drop-shadow(0 0 12px rgba(0, 255, 180, .16));
+    }
+    .medusa-body-shadow,
+    .medusa-body-metal,
+    .medusa-body-seams,
+    .medusa-body-glimmer { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .medusa-body-shadow { stroke: #03070c; stroke-width: 58; }
+    .medusa-body-metal { stroke: url(#medusaMetal); stroke-width: 47; }
+    .medusa-body-seams { stroke: rgba(4, 17, 26, .7); stroke-width: 42; stroke-linecap: butt; stroke-dasharray: 5 2; }
+    .medusa-body-glimmer { stroke: url(#medusaFlow); stroke-width: 29; stroke-dasharray: 1 16; animation: medusa-scale-flow 5.5s linear infinite; }
+    .medusa-tendril { fill: none; stroke: url(#medusaMetal); stroke-width: 8; stroke-linecap: round; filter: url(#medusaGlow); }
+    .medusa-node {
+      fill: #a6ff00;
+      stroke: #d7ff94;
+      stroke-width: 1.5;
+      filter: url(#medusaGlow);
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: medusa-node-breathe 2.6s ease-in-out infinite;
+    }
+    .medusa-node:nth-child(2n) { animation-delay: -1.3s; }
+    .medusa-node:nth-child(3n) { animation-delay: -.65s; }
+    .medusa-head-shell { fill: url(#medusaMetal); stroke: #7dffd1; stroke-width: 2; filter: url(#medusaGlow); }
+    .medusa-eye { fill: #00ff72; filter: url(#medusaGlow); animation: medusa-node-breathe 2s ease-in-out infinite; }
+    @keyframes medusa-camera-push { from { transform: scale(1); } to { transform: scale(1.075); } }
+    @keyframes medusa-scale-flow { to { stroke-dashoffset: -68; } }
+    @keyframes medusa-node-breathe {
+      0%, 100% { opacity: .62; transform: scale(.82); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    @keyframes cyber-wink {
+      0%, 91%, 95%, 100% { transform: scaleY(1); }
+      92%, 94% { transform: scaleY(.12); border-radius: 2px; }
+    }
+
+    body[data-active-screen] { background-color: #0a0b10; }
+
+    .topbar .brand-mark {
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: rgba(0, 255, 255, .07);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 13px rgba(0, 255, 255, .32);
+    }
+
+    .brand h1,
+    .subtitle { color: var(--neon-cyan); font-family: inherit; }
+    .subtitle { color: #8ca4b8; }
+
+    .icon-button,
+    .action-button,
+    .language-select,
+    .dpad button,
+    .game-intro-launch,
+    .game-intro-close {
+      border: 1px solid var(--cyber-border);
+      border-radius: 2px;
+      background: rgba(7, 14, 24, .94);
+      color: var(--neon-cyan);
+      font-family: inherit;
+      box-shadow: 0 0 10px rgba(0, 255, 255, .14), inset 0 0 10px rgba(0, 255, 255, .04);
+    }
+
+    .icon-button:hover:not(:disabled),
+    .action-button:hover,
+    .dpad button:hover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 255, 255, .15);
+      color: #fff;
+      box-shadow: 0 0 14px var(--neon-cyan), 0 0 34px rgba(0, 255, 255, .5);
+    }
+
+    .score-row .stat {
+      border: 0;
+      border-bottom: 1px solid rgba(0, 255, 255, .3);
+      border-radius: 0;
+      background: rgba(0, 255, 255, .035);
+      box-shadow: 0 0 16px rgba(0, 255, 255, .08);
+    }
+    .stat-label { color: #84a3b3; font-family: inherit; }
+    .stat-value { color: var(--neon-cyan); font-family: "Lucida Console", Consolas, monospace; text-shadow: 0 0 9px rgba(0, 255, 255, .65); }
+    .stat.current .stat-value { color: var(--neon-green); text-shadow: 0 0 10px rgba(0, 255, 0, .65); }
+    .stat.level .stat-value { color: var(--neon-pink); text-shadow: 0 0 10px rgba(255, 0, 255, .55); }
+
+    .board-shell,
+    .game[data-active-screen="game"] .board-shell {
+      position: relative;
+      padding: 10px;
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: rgba(4, 8, 16, .92);
+      box-shadow: 0 0 12px rgba(0, 255, 255, .26), 0 0 36px rgba(0, 255, 255, .12), inset 0 0 22px rgba(0, 255, 255, .05);
+    }
+
+    .game[data-active-screen="game"] .board-wrap,
+    .board-wrap {
+      position: relative;
+      border: 1px solid rgba(0, 255, 255, .55);
+      border-radius: 1px;
+      background-color: #080b12;
+      background-image:
+        linear-gradient(rgba(0, 255, 255, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, .08) 1px, transparent 1px),
+        radial-gradient(ellipse at center, rgba(0, 255, 255, .07), transparent 72%);
+      background-size: 5% 5%, 5% 5%, 100% 100%;
+      box-shadow: inset 0 0 30px rgba(0, 255, 255, .1);
+    }
+
+    .game[data-active-screen="game"] .board-shell::after,
+    .board-shell::after {
+      position: absolute;
+      z-index: 2;
+      inset: 2px;
+      border: 1px solid transparent;
+      background: linear-gradient(100deg, transparent 10%, rgba(0, 255, 255, .7) 50%, transparent 90%) top / 35% 1px no-repeat;
+      content: "";
+      pointer-events: none;
+      animation: cyber-current 3.4s linear infinite;
+    }
+
+    @keyframes cyber-current {
+      from { background-position: -35% 0; }
+      to { background-position: 135% 0; }
+    }
+
+    .game[data-active-screen="game"] .score-row { width: min(100%, 600px); }
+    .game[data-active-screen="game"] .stat {
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .game[data-active-screen="game"] .stat-label { color: rgba(0, 255, 255, .74); }
+    .game[data-active-screen="game"] .stat-value { color: var(--neon-cyan); }
+
+    .overlay {
+      background: rgba(2, 5, 12, .72);
+      backdrop-filter: blur(7px);
+    }
+
+    .overlay-card {
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: var(--cyber-panel);
+      box-shadow: 0 0 18px rgba(0, 255, 255, .23), 0 0 45px rgba(0, 255, 255, .1), inset 0 0 22px rgba(0, 255, 255, .055);
+      color: var(--text);
+    }
+
+    .overlay-screen h2 { color: var(--neon-cyan); font-family: inherit; text-shadow: 0 0 12px rgba(0, 255, 255, .5); }
+    .overlay-screen p { color: #9eb6c5; }
+    .overlay-icon { border-color: var(--neon-cyan); border-radius: 2px; background: rgba(0, 255, 255, .08); color: var(--neon-cyan); box-shadow: 0 0 14px rgba(0, 255, 255, .22); }
+
+    .primary-button,
+    .secondary-button,
+    .level-choice {
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: rgba(0, 255, 255, .045);
+      color: var(--neon-cyan);
+      font-family: inherit;
+      box-shadow: 0 0 10px rgba(0, 255, 255, .13), inset 0 0 10px rgba(0, 255, 255, .035);
+    }
+
+    .primary-button {
+      border-color: var(--neon-green);
+      background: rgba(0, 255, 0, .08);
+      color: var(--neon-green);
+      box-shadow: 0 0 11px rgba(0, 255, 0, .18), inset 0 0 10px rgba(0, 255, 0, .04);
+    }
+
+    .primary-button:hover,
+    .secondary-button:hover,
+    .level-choice:hover {
+      transform: translateY(-1px);
+      border-color: var(--neon-cyan);
+      background: rgba(0, 255, 255, .16);
+      color: #fff;
+      box-shadow: 0 0 13px var(--neon-cyan), 0 0 34px rgba(0, 255, 255, .56), inset 0 0 16px rgba(0, 255, 255, .16);
+    }
+
+    .game[data-active-screen="levels"] .board-shell,
+    .game[data-active-screen="highScores"] .board-shell {
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .game[data-active-screen="levels"] .overlay,
+    .game[data-active-screen="highScores"] .overlay { color: var(--text); }
+    .game[data-active-screen="levels"] .overlay-card,
+    .game[data-active-screen="highScores"] .overlay-card {
+      border: 1px solid var(--neon-cyan);
+      background: var(--cyber-panel);
+      box-shadow: 0 0 18px rgba(0, 255, 255, .23), inset 0 0 22px rgba(0, 255, 255, .055);
+      color: var(--text);
+    }
+    .game[data-active-screen="levels"] .overlay-icon,
+    .game[data-active-screen="highScores"] .overlay-icon {
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: rgba(0, 255, 255, .08);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 255, 255, .22);
+    }
+    .game[data-active-screen="levels"] .secondary-button,
+    .game[data-active-screen="highScores"] .secondary-button {
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: rgba(0, 255, 255, .045);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(0, 255, 255, .13), inset 0 0 10px rgba(0, 255, 255, .035);
+    }
+    .game[data-active-screen="levels"] .secondary-button:hover,
+    .game[data-active-screen="highScores"] .secondary-button:hover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 255, 255, .16);
+      color: #fff;
+      box-shadow: 0 0 13px var(--neon-cyan), 0 0 30px rgba(0, 255, 255, .46);
+    }
+    .game[data-active-screen="levels"] .overlay-screen h2,
+    .game[data-active-screen="highScores"] .overlay-screen h2 { color: var(--neon-cyan); }
+    .game[data-active-screen="levels"] .overlay-screen p,
+    .game[data-active-screen="highScores"] .overlay-screen p { color: #9eb6c5; }
+
+    .game[data-active-screen="levels"] .level-choice {
+      position: relative;
+      min-height: 74px;
+      padding: 14px 16px;
+      border: 1px solid rgba(0, 255, 255, .48);
+      background: linear-gradient(90deg, rgba(0, 255, 255, .08), rgba(255, 0, 255, .025));
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+    }
+
+    .game[data-active-screen="levels"] .level-choice:hover,
+    .game[data-active-screen="levels"] .level-choice:focus-visible {
+      border-color: var(--neon-green);
+      background: rgba(0, 255, 0, .18);
+      box-shadow: 0 0 16px var(--neon-green), 0 0 40px rgba(0, 255, 0, .56), inset 0 0 20px rgba(0, 255, 0, .22);
+    }
+
+    .game[data-active-screen="levels"] .level-name { color: var(--neon-cyan); font-family: inherit; text-shadow: 0 0 8px rgba(0, 255, 255, .5); }
+    .game[data-active-screen="levels"] .level-description { color: #9eb6c5; }
+    .game[data-active-screen="levels"] .level-choice:hover .level-name { color: var(--neon-green); }
+
+    .settings-form { color: var(--text); }
+    .setting-label { color: var(--neon-cyan); font-family: inherit; }
+    .setting-description { color: #8ca4b8; }
+    .music-toggle {
+      display: flex;
+      width: 100%;
+      min-height: 44px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 7px 10px;
+      border: 1px solid rgba(0, 255, 255, .34);
+      border-radius: 2px;
+      background: rgba(0, 255, 255, .035);
+      color: var(--neon-cyan);
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: inset 0 0 10px rgba(0, 255, 255, .04);
+    }
+    .music-toggle-label { font-size: 13px; font-weight: 700; }
+    .music-toggle-track {
+      position: relative;
+      width: 48px;
+      height: 22px;
+      flex: 0 0 48px;
+      border: 1px solid rgba(140, 164, 184, .7);
+      background: rgba(65, 76, 92, .4);
+      box-shadow: inset 0 0 7px rgba(0, 0, 0, .7);
+      transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    .music-toggle-knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #a8bac4;
+      background: #687681;
+      box-shadow: 0 0 6px rgba(0, 0, 0, .7);
+      transition: left .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    .music-toggle[aria-pressed="true"] .music-toggle-track {
+      border-color: var(--neon-green);
+      background: rgba(0, 255, 0, .14);
+      box-shadow: inset 0 0 9px rgba(0, 255, 0, .18), 0 0 8px rgba(0, 255, 0, .3);
+    }
+    .music-toggle[aria-pressed="true"] .music-toggle-knob {
+      left: 27px;
+      border-color: var(--neon-green);
+      background: var(--neon-green);
+      box-shadow: 0 0 10px var(--neon-green);
+    }
+    .music-toggle:hover { border-color: var(--neon-cyan); box-shadow: 0 0 13px rgba(0, 255, 255, .35); }
+    .music-toggle:focus-visible { outline: 2px solid var(--neon-cyan); outline-offset: 3px; }
+
+    .language-select,
+    .settings-language {
+      border: 1px solid var(--cyber-border);
+      border-radius: 2px;
+      background: #0a0b10;
+      color: var(--neon-cyan);
+      font-family: inherit;
+    }
+
+    .volume-slider {
+      height: 8px;
+      border: 1px solid rgba(0, 255, 255, .65);
+      border-radius: 0;
+      background: repeating-linear-gradient(90deg, rgba(0, 255, 255, .2) 0 8px, transparent 8px 12px), #080b12;
+      accent-color: var(--neon-cyan);
+      box-shadow: 0 0 9px rgba(0, 255, 255, .28);
+    }
+    .volume-slider::-webkit-slider-thumb {
+      width: 15px;
+      height: 20px;
+      border: 1px solid var(--neon-cyan);
+      border-radius: 0;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 12px var(--neon-cyan);
+      -webkit-appearance: none;
+    }
+    .volume-slider::-moz-range-thumb {
+      width: 15px;
+      height: 20px;
+      border: 1px solid var(--neon-cyan);
+      border-radius: 0;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 12px var(--neon-cyan);
+    }
+    .volume-value,
+    .voice-rate-value { color: var(--neon-green); font-family: inherit; }
+
+    .game[data-active-screen="paused"] .overlay,
+    .game[data-active-screen="gameOver"] .overlay,
+    .game[data-active-screen="victory"] .overlay {
+      background: rgba(0, 0, 0, .8);
+      backdrop-filter: blur(4px);
+    }
+
+    .game[data-active-screen="paused"] .overlay-card {
+      border: 1px solid var(--neon-red);
+      border-radius: 2px;
+      background: linear-gradient(145deg, rgba(36, 4, 16, .98), rgba(11, 8, 16, .98));
+      box-shadow: 0 0 18px rgba(255, 49, 88, .62), 0 0 55px rgba(255, 0, 64, .26), inset 0 0 24px rgba(255, 49, 88, .1);
+      color: #ffe2e9;
+      animation: warning-pulse 1.6s ease-in-out infinite alternate;
+    }
+
+    .game[data-active-screen="paused"] .overlay-screen h2 { color: #ff6a83; text-shadow: 0 0 12px rgba(255, 49, 88, .8); }
+    .game[data-active-screen="paused"] .overlay-screen h2::before {
+      display: block;
+      margin-bottom: 9px;
+      color: var(--neon-red);
+      content: "SYSTEM WARNING";
+      font-size: 11px;
+      letter-spacing: .22em;
+    }
+    .game[data-active-screen="paused"] .overlay-screen p { color: #e6aeba; }
+    .game[data-active-screen="paused"] .overlay-icon { border-color: var(--neon-red); background: rgba(255, 49, 88, .12); color: var(--neon-red); box-shadow: 0 0 16px rgba(255, 49, 88, .5); }
+    .game[data-active-screen="paused"] .overlay-icon { border-radius: 2px; }
+    .game[data-active-screen="paused"] .primary-button { border: 1px solid var(--neon-red); border-radius: 2px; background: rgba(255, 49, 88, .17); color: #ff93a6; box-shadow: 0 0 15px rgba(255, 49, 88, .45); }
+    .game[data-active-screen="paused"] .secondary-button { border: 1px solid rgba(255, 115, 141, .5); border-radius: 2px; background: rgba(255, 49, 88, .05); color: #ffc1cc; box-shadow: 0 0 9px rgba(255, 49, 88, .18); }
+    .game[data-active-screen="paused"] .primary-button:hover,
+    .game[data-active-screen="paused"] .secondary-button:hover { border-color: #ff9aad; background: rgba(255, 49, 88, .24); color: #fff; box-shadow: 0 0 14px #ff3158, 0 0 32px rgba(255, 49, 88, .58); }
+
+    @keyframes warning-pulse {
+      from { box-shadow: 0 0 14px rgba(255, 49, 88, .48), 0 0 38px rgba(255, 0, 64, .2), inset 0 0 18px rgba(255, 49, 88, .07); }
+      to { box-shadow: 0 0 23px rgba(255, 49, 88, .8), 0 0 64px rgba(255, 0, 64, .34), inset 0 0 28px rgba(255, 49, 88, .14); }
+    }
+
+    .game[data-active-screen="gameOver"] .overlay-card,
+    .game[data-active-screen="victory"] .overlay-card,
+    .game[data-active-screen="highScores"] .overlay-card {
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: var(--cyber-panel);
+      box-shadow: 0 0 18px rgba(0, 255, 255, .24), inset 0 0 22px rgba(0, 255, 255, .05);
+      color: var(--text);
+    }
+
+    .game[data-active-screen="gameOver"] .overlay-screen h2,
+    .game[data-active-screen="victory"] .overlay-screen h2,
+    .game[data-active-screen="highScores"] .overlay-screen h2 { color: var(--neon-cyan); }
+    .game[data-active-screen="gameOver"] .overlay-screen p,
+    .game[data-active-screen="victory"] .overlay-screen p,
+    .game[data-active-screen="highScores"] .overlay-screen p { color: #9eb6c5; }
+    .game[data-active-screen="gameOver"] .overlay-icon,
+    .game[data-active-screen="victory"] .overlay-icon,
+    .game[data-active-screen="highScores"] .overlay-icon { border-radius: 2px; }
+    .game[data-active-screen="gameOver"] .primary-button,
+    .game[data-active-screen="victory"] .primary-button,
+    .game[data-active-screen="highScores"] .primary-button {
+      border: 1px solid var(--neon-green);
+      border-radius: 2px;
+      background: rgba(0, 255, 0, .08);
+      color: var(--neon-green);
+      box-shadow: 0 0 11px rgba(0, 255, 0, .18), inset 0 0 10px rgba(0, 255, 0, .04);
+    }
+    .game[data-active-screen="gameOver"] .secondary-button,
+    .game[data-active-screen="victory"] .secondary-button,
+    .game[data-active-screen="highScores"] .secondary-button {
+      border: 1px solid var(--neon-cyan);
+      border-radius: 2px;
+      background: rgba(0, 255, 255, .045);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(0, 255, 255, .13), inset 0 0 10px rgba(0, 255, 255, .035);
+    }
+    .game[data-active-screen="gameOver"] .primary-button:hover,
+    .game[data-active-screen="victory"] .primary-button:hover,
+    .game[data-active-screen="highScores"] .primary-button:hover,
+    .game[data-active-screen="gameOver"] .secondary-button:hover,
+    .game[data-active-screen="victory"] .secondary-button:hover,
+    .game[data-active-screen="highScores"] .secondary-button:hover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 255, 255, .16);
+      color: #fff;
+      box-shadow: 0 0 13px var(--neon-cyan), 0 0 30px rgba(0, 255, 255, .46);
+    }
+    .leaderboard-entry { border-color: rgba(0, 255, 255, .3); border-radius: 2px; background: rgba(0, 255, 255, .045); color: var(--text); }
+    .leaderboard-rank { color: var(--neon-cyan); }
+    .leaderboard-score { color: var(--neon-green); text-shadow: 0 0 8px rgba(0, 255, 0, .5); }
+    .leaderboard-empty,
+    .leaderboard-status { color: #8ca4b8; }
+
+    .game[data-active-screen="tutorial"] .tutorial-callout {
+      border-color: var(--neon-cyan);
+      border-radius: 2px;
+      background: var(--cyber-panel);
+      box-shadow: 0 0 18px rgba(0, 255, 255, .3), inset 0 0 18px rgba(0, 255, 255, .07);
+      color: var(--text);
+    }
+    .game[data-active-screen="tutorial"] .tutorial-callout::after { border-color: var(--neon-cyan); background: #0b0f18; }
+    .tutorial-callout h2 { color: var(--neon-cyan); font-family: inherit; }
+    .tutorial-callout p { color: #a8c3d1; }
+    .tutorial-progress { color: var(--neon-green); font-family: inherit; }
+    .tutorial-arrow { border: 1px solid var(--neon-pink); border-radius: 2px; background: rgba(255, 0, 255, .1); color: var(--neon-pink); box-shadow: 0 0 12px rgba(255, 0, 255, .28); }
+
+    .game-intro-launch,
+    .game-intro-close { border-color: var(--neon-cyan); background: #080b12; color: var(--neon-cyan); }
+
+    .praise-cyber-snake { position: relative; display: block; flex: 0 0 68px; }
+    .praise-cyber-segment,
+    .praise-cyber-head {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--neon-green);
+      background: rgba(0, 255, 0, .22);
+      box-shadow: 0 0 8px var(--neon-green);
+    }
+    .praise-cyber-segment:first-child { top: 37px; left: 5px; }
+    .praise-cyber-segment:nth-child(2) { top: 37px; left: 27px; border-color: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+    .praise-cyber-head { top: 14px; left: 36px; width: 28px; height: 28px; clip-path: polygon(18% 0, 82% 0, 100% 50%, 82% 100%, 18% 100%, 0 50%); }
+    .praise-cyber-head i { position: absolute; top: 11px; left: 7px; width: 4px; height: 4px; border-radius: 50%; background: var(--neon-pink); box-shadow: 0 0 5px var(--neon-pink); }
+    .praise-cyber-head i + i { left: 17px; }
+    .praise-cyber-head i:first-child { animation: cyber-wink 4s steps(1, end) infinite; }
+
+    @media (max-width: 540px) {
+      .game[data-active-screen="menu"] .board-wrap { min-height: 620px; aspect-ratio: auto; }
+      .game[data-active-screen="menu"] .menu-art {
+        top: 5%;
+        right: auto;
+        left: 50%;
+        width: min(60%, 300px);
+        opacity: .34;
+        transform: translateX(-50%);
+      }
+      .game[data-active-screen="menu"] .menu-copy {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+        justify-items: center;
+        align-content: center;
+        padding: 42px 22px;
+        text-align: center;
+      }
+      .game[data-active-screen="menu"] .menu-copy > * { grid-column: 1; }
+      .game[data-active-screen="menu"] .menu-copy > p { max-width: 380px; }
+      .game[data-active-screen="menu"] .menu-actions { grid-template-columns: 1fr 1fr; }
+      .game[data-active-screen="menu"] .menu-copy h2 { font-size: clamp(38px, 11vw, 54px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::after { background: none; }
+      .board-shell::after,
+      .game[data-active-screen="paused"] .overlay-card { animation: none; }
+    }
 
   </style>
 </head>
@@ -1545,6 +2046,7 @@
       </div>
       <div class="top-actions">
         <button class="icon-button" id="rankingButton" type="button" aria-label="High Scores" title="High Scores" data-i18n-aria-label="highScoresTitle"><span class="top-button-icon" aria-hidden="true">★</span><span data-i18n="highScoresTitle">High Scores</span></button>
+        <button class="icon-button" id="projectIntroButton" type="button" data-i18n="projectIntroButton"><span class="top-button-icon" aria-hidden="true">ⓘ</span><span data-i18n="projectIntroButton">Project info</span></button>
         <button class="icon-button" id="settingsButton" type="button" aria-label="Settings" title="Settings"><span class="top-button-icon" aria-hidden="true">⚙</span><span data-i18n="settings">Settings</span></button>
         <button class="icon-button" id="pauseButton" type="button" aria-label="Pause game" title="Pause / resume (Esc or Space)" hidden><span class="top-button-icon" aria-hidden="true">Ⅱ</span><span data-i18n="pause">Pause</span></button>
         <button class="icon-button music-button" id="musicButton" type="button" aria-label="Turn background music off" aria-pressed="true" title="Toggle background music" hidden><span class="top-button-icon" aria-hidden="true">♫</span><span data-i18n="musicOn">Music on</span></button>
@@ -1563,7 +2065,11 @@
       <div class="board-wrap" id="boardWrap">
         <canvas id="gameCanvas" width="600" height="600" role="img" aria-label="Snake game board" data-i18n-aria-label="gameBoard"></canvas>
         <div class="praise-toast" id="praiseToast" role="status" aria-live="polite" hidden>
-          <img class="praise-character" id="praiseCharacter" src="images/snake-character.png" alt="" aria-hidden="true">
+          <div class="praise-character praise-cyber-snake" id="praiseCharacter" aria-hidden="true">
+            <span class="praise-cyber-segment"></span>
+            <span class="praise-cyber-segment"></span>
+            <span class="praise-cyber-head"><i></i><i></i></span>
+          </div>
           <span class="praise-message" id="praiseMessage"></span>
         </div>
         <div class="overlay" id="overlay">
@@ -1583,68 +2089,75 @@
           </svg>
           <div class="overlay-card">
             <section class="overlay-screen" data-screen="menu">
-              <img class="menu-artwork" src="images/snake-menu.svg" alt="Colorful retro Snake game menu with New Game, High Scores, Settings, and More Games buttons">
-              <img class="menu-character" src="images/snake-character.png" alt="" aria-hidden="true">
               <button class="menu-tutorial-button" id="menuTutorialButton" type="button" data-i18n="tutorialButton">Tutorial</button>
-              <button class="menu-artwork-button" id="menuArtworkStartButton" type="button" data-action="new-game" aria-label="New Game" data-i18n-aria-label="newGameLabel"></button>
-              <button class="menu-artwork-button" id="menuHighScoresButton" type="button" data-action="high-scores" aria-label="High Scores" data-i18n-aria-label="highScoresTitle"></button>
-              <button class="menu-artwork-button" id="menuArtworkSettingsButton" type="button" data-action="settings" aria-label="Settings" data-i18n-aria-label="settings"></button>
-              <button class="menu-artwork-button" id="menuMoreGamesButton" type="button" data-action="more-games" aria-label="More Games" data-i18n-aria-label="moreGamesTitle"></button>
               <div class="menu-copy">
                 <div class="menu-eyebrow" data-i18n="menuEyebrow">A LITTLE ARCADE, A LOT OF GLOW</div>
                 <h2 data-i18n="menuTitle">Neon Snake</h2>
                 <p data-i18n="menuDescription">Eat glowing fruit, grow longer, and beat your high score.</p>
                 <div class="menu-actions">
-                  <button class="primary-button" id="menuStartButton" type="button" data-i18n="start">Start game</button>
-                  <button class="secondary-button" id="menuSettingsButton" type="button" data-i18n="settings">Settings</button>
+                  <button class="primary-button" id="menuArtworkStartButton" type="button" data-i18n="newGameLabel">New Game</button>
+                  <button class="secondary-button" id="menuProjectIntroButton" type="button" data-i18n="projectIntroButton">Project info</button>
+                  <button class="secondary-button" id="menuHighScoresButton" type="button" data-i18n="highScoresTitle">High Scores</button>
+                  <button class="secondary-button" id="menuArtworkSettingsButton" type="button" data-i18n="settings">Settings</button>
+                  <button class="secondary-button" id="menuMoreGamesButton" type="button" data-i18n="moreGamesTitle">More Games</button>
                 </div>
               </div>
               <div class="menu-art" aria-hidden="true">
-                <span class="menu-food berry"></span>
-                <span class="menu-food gold"></span>
-                <span class="menu-food crystal"></span>
-                <svg viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="menuSnakeGradient" x1="55" y1="220" x2="263" y2="77" gradientUnits="userSpaceOnUse">
-                      <stop stop-color="#b6ff69"/>
-                      <stop offset=".48" stop-color="#50f0bd"/>
-                      <stop offset="1" stop-color="#5edfff"/>
-                    </linearGradient>
-                    <radialGradient id="menuOrbGradient">
-                      <stop stop-color="#8fffe6" stop-opacity=".22"/>
-                      <stop offset="1" stop-color="#8fffe6" stop-opacity="0"/>
-                    </radialGradient>
-                  </defs>
-                  <circle cx="164" cy="144" r="133" fill="url(#menuOrbGradient)"/>
-                  <g class="snake-buddy">
-                    <path d="M55 218C55 177 111 165 130 201C151 243 195 246 202 211C209 179 168 160 177 132C186 104 218 107 231 128C246 152 268 139 267 111C266 94 253 83 259 66" stroke="rgba(10,43,49,.8)" stroke-width="39" stroke-linecap="round"/>
-                    <path d="M55 218C55 177 111 165 130 201C151 243 195 246 202 211C209 179 168 160 177 132C186 104 218 107 231 128C246 152 268 139 267 111C266 94 253 83 259 66" stroke="url(#menuSnakeGradient)" stroke-width="31" stroke-linecap="round"/>
-                    <path class="snake-glimmer" d="M61 213C62 184 103 174 121 199M143 216C157 237 186 233 192 211M187 145C190 124 211 117 226 133" stroke="#effff9" stroke-opacity=".55" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 12"/>
-                    <circle cx="55" cy="218" r="10" fill="#b6ff69"/>
-                    <circle cx="78" cy="188" r="2.7" fill="#f1fff5" fill-opacity=".64"/>
-                    <circle cx="111" cy="191" r="2.7" fill="#f1fff5" fill-opacity=".64"/>
-                    <circle cx="150" cy="226" r="2.7" fill="#f1fff5" fill-opacity=".64"/>
-                    <circle cx="188" cy="199" r="2.7" fill="#f1fff5" fill-opacity=".64"/>
-                    <circle cx="202" cy="140" r="2.7" fill="#f1fff5" fill-opacity=".64"/>
-                    <g class="buddy-head">
-                      <circle cx="258" cy="78" r="27" fill="url(#menuSnakeGradient)" stroke="#d9fff3" stroke-opacity=".7" stroke-width="2"/>
-                      <ellipse cx="249" cy="83" rx="5.2" ry="6.4" fill="#f7fffd"/>
-                      <ellipse cx="266" cy="83" rx="5.2" ry="6.4" fill="#f7fffd"/>
-                      <circle cx="250" cy="84" r="2.7" fill="#16333b"/>
-                      <circle cx="267" cy="84" r="2.7" fill="#16333b"/>
-                      <circle cx="251" cy="81" r="1.15" fill="white"/>
-                      <circle cx="268" cy="81" r="1.15" fill="white"/>
-                      <ellipse cx="243" cy="92" rx="4.2" ry="2.5" fill="#ff90aa" fill-opacity=".78"/>
-                      <ellipse cx="273" cy="92" rx="4.2" ry="2.5" fill="#ff90aa" fill-opacity=".78"/>
-                      <path d="M252 94C256 100 263 100 267 94" stroke="#16404a" stroke-width="2.8" stroke-linecap="round"/>
+                <div class="medusa-stage">
+                  <svg viewBox="0 0 340 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="medusaMetal" x1="44" y1="243" x2="281" y2="59" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#596a76"/>
+                        <stop offset=".28" stop-color="#d6e1e5"/>
+                        <stop offset=".55" stop-color="#667985"/>
+                        <stop offset=".78" stop-color="#c3d0d4"/>
+                        <stop offset="1" stop-color="#52646f"/>
+                      </linearGradient>
+                      <linearGradient id="medusaFlow" x1="45" y1="235" x2="271" y2="76" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#00ff78" stop-opacity="0"/>
+                        <stop offset=".46" stop-color="#caffdf" stop-opacity=".95"/>
+                        <stop offset=".62" stop-color="#00ff9d" stop-opacity=".15"/>
+                        <stop offset="1" stop-color="#00ff78" stop-opacity="0"/>
+                      </linearGradient>
+                      <radialGradient id="medusaAura">
+                        <stop stop-color="#00ff80" stop-opacity=".2"/>
+                        <stop offset="1" stop-color="#00ff80" stop-opacity="0"/>
+                      </radialGradient>
+                      <filter id="medusaGlow" x="-80%" y="-80%" width="260%" height="260%">
+                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                      </filter>
+                    </defs>
+                    <circle cx="177" cy="156" r="155" fill="url(#medusaAura)"/>
+                    <g class="medusa-tendrils">
+                      <path class="medusa-tendril" d="M247 112C267 91 274 64 300 59"/>
+                      <path class="medusa-tendril" d="M252 119C283 105 294 83 321 86"/>
+                      <path class="medusa-tendril" d="M251 126C278 128 301 116 320 131"/>
+                      <path class="medusa-tendril" d="M247 132C267 151 282 155 304 151"/>
                     </g>
-                  </g>
-                  <path class="buddy-sparkle" d="M73 78L76 85L83 88L76 91L73 98L70 91L63 88L70 85L73 78Z" fill="#d5fff7"/>
-                  <path class="buddy-sparkle" d="M225 54L227 59L232 61L227 63L225 68L223 63L218 61L223 59L225 54Z" fill="#c4b4ff"/>
-                  <circle cx="74" cy="75" r="3" fill="#c8fff1" fill-opacity=".8"/>
-                  <circle cx="225" cy="222" r="2" fill="#d5c9ff" fill-opacity=".9"/>
-                  <circle cx="118" cy="48" r="2" fill="#c8fff1" fill-opacity=".7"/>
-                </svg>
+                    <path class="medusa-body-shadow" d="M51 244C22 210 39 164 76 158C120 151 128 213 174 220C221 228 242 181 211 154C183 130 143 146 140 111C137 78 167 58 202 70C222 77 237 92 247 115"/>
+                    <path class="medusa-body-metal" d="M51 244C22 210 39 164 76 158C120 151 128 213 174 220C221 228 242 181 211 154C183 130 143 146 140 111C137 78 167 58 202 70C222 77 237 92 247 115"/>
+                    <path class="medusa-body-seams" d="M51 244C22 210 39 164 76 158C120 151 128 213 174 220C221 228 242 181 211 154C183 130 143 146 140 111C137 78 167 58 202 70C222 77 237 92 247 115"/>
+                    <path class="medusa-body-glimmer" d="M51 244C22 210 39 164 76 158C120 151 128 213 174 220C221 228 242 181 211 154C183 130 143 146 140 111C137 78 167 58 202 70C222 77 237 92 247 115"/>
+                    <g class="medusa-nodes">
+                      <circle class="medusa-node" cx="51" cy="244" r="5"/>
+                      <circle class="medusa-node" cx="47" cy="180" r="4"/>
+                      <circle class="medusa-node" cx="105" cy="168" r="4"/>
+                      <circle class="medusa-node" cx="145" cy="212" r="4"/>
+                      <circle class="medusa-node" cx="218" cy="193" r="4"/>
+                      <circle class="medusa-node" cx="193" cy="141" r="4"/>
+                      <circle class="medusa-node" cx="143" cy="95" r="4"/>
+                      <circle class="medusa-node" cx="212" cy="78" r="4"/>
+                    </g>
+                    <g class="medusa-head">
+                      <path class="medusa-head-shell" d="M230 108L244 91L271 94L289 113L279 136L256 145L239 132Z"/>
+                      <path d="M244 104L270 101L280 113L262 119L241 116Z" fill="#111a21" stroke="#00ff9d" stroke-width="1.5"/>
+                      <circle class="medusa-eye" cx="263" cy="109" r="4"/>
+                      <path d="M258 126L278 120M248 135L262 143" stroke="#00ff78" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M238 101L229 91M278 99L287 91" stroke="#c8d5d9" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+                  </svg>
+                </div>
               </div>
             </section>
             <section class="overlay-screen" data-screen="levels" hidden>
@@ -1679,6 +2192,13 @@
               <div class="overlay-icon" aria-hidden="true">⚙</div>
               <h2 data-i18n="settings">Settings</h2>
               <div class="settings-form">
+                <div class="setting-field">
+                  <span class="setting-label" data-i18n="musicTitle">Toggle background music</span>
+                  <button class="music-toggle" id="settingsMusicToggle" type="button" aria-pressed="true" aria-label="Turn background music off">
+                    <span class="music-toggle-label" id="settingsMusicToggleLabel">Music on</span>
+                    <span class="music-toggle-track" aria-hidden="true"><span class="music-toggle-knob"></span></span>
+                  </button>
+                </div>
                 <label class="setting-field" for="volumeSlider">
                   <span class="setting-label" data-i18n="musicVolume">Music volume</span>
                   <span class="setting-description" data-i18n="volumeDescription">Adjust background music volume.</span>
@@ -1815,6 +2335,8 @@
       const languageSelect = document.getElementById("languageSelect");
       const volumeSlider = document.getElementById("volumeSlider");
       const volumeValue = document.getElementById("volumeValue");
+      const settingsMusicToggle = document.getElementById("settingsMusicToggle");
+      const settingsMusicToggleLabel = document.getElementById("settingsMusicToggleLabel");
       const voiceRateSlider = document.getElementById("voiceRateSlider");
       const voiceRateValue = document.getElementById("voiceRateValue");
       const praiseToast = document.getElementById("praiseToast");
@@ -1838,6 +2360,7 @@
           highScoresTitle: "High Scores",
           moreGamesTitle: "More Games",
           moreGamesMessage: "More games are coming soon!",
+          projectIntroButton: "Project info",
           menuTitle: "Neon Snake",
           menuEyebrow: "A LITTLE ARCADE, A LOT OF GLOW",
           menuDescription: "Eat glowing fruit, grow longer, and beat your high score.",
@@ -1914,9 +2437,18 @@
           introPptSlide2Body: "Collect food to increase your score. The snake grows longer, so watch where its body is.",
           introPptSlide3Title: "Avoid collisions",
           introPptSlide3Body: "Avoid the walls and the snake's own body. Continue when you're ready to choose a level.",
+          projectIntroSlide1Title: "A classic arcade challenge",
+          projectIntroSlide1Body: "Neon Snake brings the classic game to life. Guide your snake, collect food, and plan your route as you grow longer.",
+          projectIntroSlide2Title: "Play, grow, and beat your best",
+          projectIntroSlide2Body: "Choose a difficulty, then steer with the arrow keys, WASD, or touch controls. Random food grows the snake and raises your score; hitting a wall or your own body ends the run. Your best score is saved on this device.",
+          projectIntroSlide3Title: "How the game is built",
+          projectIntroSlide3Body: "Made with native HTML, CSS, and JavaScript. Canvas draws the board, snake, and food; DOM elements provide the menus and controls. The game includes a menu, tutorial, difficulty selection, gameplay, pause, results, leaderboard, and settings.",
+          projectIntroContinue: "Continue to tutorial",
+          projectIntroDone: "Done",
           introPptPrevious: "Previous",
           introPptNext: "Next",
           introPptContinue: "Continue",
+          introPptSkip: "Skip",
           introPptPage: "Page {current} of {total}",
           moveLabel: "Move",
           orLabel: "or",
@@ -1943,6 +2475,7 @@
           highScoresTitle: "最高分",
           moreGamesTitle: "更多游戏",
           moreGamesMessage: "更多游戏即将推出！",
+          projectIntroButton: "项目介绍",
           menuTitle: "霓虹贪吃蛇",
           menuEyebrow: "霓虹街机 · 即刻出发",
           menuDescription: "吃掉发光食物，让蛇变长，挑战你的最高分。",
@@ -2019,9 +2552,18 @@
           introPptSlide2Body: "收集场地中的食物来增加分数。小蛇会不断变长，行动时要留意身体的位置。",
           introPptSlide3Title: "小心碰撞",
           introPptSlide3Body: "避免撞到场地边缘或小蛇自己的身体。准备好后，继续选择你的游戏关卡。",
+          projectIntroSlide1Title: "经典街机挑战",
+          projectIntroSlide1Body: "霓虹贪吃蛇重现经典玩法：操控小蛇收集食物，在不断变长的同时规划前进路线。",
+          projectIntroSlide2Title: "开始游戏，挑战最高分",
+          projectIntroSlide2Body: "先选择难度，再使用方向键、WASD 或触屏控制移动。随机食物会让蛇身变长并增加分数；撞到墙壁或自己的身体则结束本局。最高分会保存在当前设备。",
+          projectIntroSlide3Title: "项目如何实现",
+          projectIntroSlide3Body: "项目使用原生 HTML、CSS 和 JavaScript。Canvas 负责绘制棋盘、蛇与食物，DOM 负责菜单和交互界面。页面包含主菜单、教程、难度选择、游戏、暂停、结算、排行榜和设置。",
+          projectIntroContinue: "进入游戏教程",
+          projectIntroDone: "完成",
           introPptPrevious: "上一页",
           introPptNext: "下一页",
           introPptContinue: "下一步",
+          introPptSkip: "跳过",
           introPptPage: "第 {current} / {total} 页",
           moveLabel: "移动",
           orLabel: "或",
@@ -2048,6 +2590,7 @@
           highScoresTitle: "랭킹",
           moreGamesTitle: "더 많은 게임",
           moreGamesMessage: "더 많은 게임이 곧 출시됩니다!",
+          projectIntroButton: "게임 소개",
           menuTitle: "네온 스네이크",
           menuEyebrow: "작은 아케이드, 반짝이는 모험",
           menuDescription: "빛나는 먹이를 먹고 길게 자라 최고 점수에 도전하세요.",
@@ -2124,9 +2667,18 @@
           introPptSlide2Body: "먹이를 모아 점수를 올리세요. 뱀이 길어지므로 몸의 위치를 주의하세요.",
           introPptSlide3Title: "충돌을 조심하세요",
           introPptSlide3Body: "벽이나 뱀의 몸에 부딪히지 않도록 하세요. 준비되면 다음 단계에서 난이도를 선택하세요.",
+          projectIntroSlide1Title: "클래식 아케이드 도전",
+          projectIntroSlide1Body: "네온 스네이크에서 뱀을 조종해 먹이를 모으고, 몸이 길어지는 동안 이동 경로를 계획하세요.",
+          projectIntroSlide2Title: "플레이하고 최고 기록에 도전하세요",
+          projectIntroSlide2Body: "난이도를 고른 다음 방향키, WASD 또는 터치로 조작하세요. 무작위 먹이를 먹으면 몸이 길어지고 점수가 오릅니다. 벽이나 자신의 몸에 부딪히면 게임이 끝나며 최고 기록은 이 기기에 저장됩니다.",
+          projectIntroSlide3Title: "게임 구현 방식",
+          projectIntroSlide3Body: "순수 HTML, CSS, JavaScript로 제작했습니다. Canvas는 보드와 뱀, 먹이를 그리고 DOM은 메뉴와 조작 화면을 구성합니다. 메인 메뉴, 튜토리얼, 난이도 선택, 플레이, 일시정지, 결과, 랭킹과 설정 화면이 포함됩니다.",
+          projectIntroContinue: "튜토리얼로 계속",
+          projectIntroDone: "완료",
           introPptPrevious: "이전",
           introPptNext: "다음",
           introPptContinue: "계속",
+          introPptSkip: "건너뛰기",
           introPptPage: "{total}페이지 중 {current}페이지",
           moveLabel: "이동",
           orLabel: "또는",
@@ -2167,9 +2719,6 @@
         { key: "gold", points: 3, weight: 25, color: "#ffd166" },
         { key: "crystal", points: 5, weight: 10, color: "#6de8ff" }
       ];
-      const snakePalette = ["#d9f79b", "#a8e8d1", "#a9dff1", "#c7b7ed"]
-        .map((color) => color.match(/[a-f\d]{2}/gi).map((channel) => parseInt(channel, 16)));
-
       const cells = 24;
       const cellSize = canvas.width / cells;
       const directions = {
@@ -2231,6 +2780,7 @@
       let musicStarting = false;
       let gameIntroReturnState = null;
       let gameIntroReturnScreen = null;
+      let gameIntroReturnFocus = null;
 
       bestElement.textContent = formatScore(best);
       resetBoard();
@@ -2244,11 +2794,16 @@
       draw();
 
       // Return from the standalone presentation directly into the existing level picker.
-      const returnToLevelSelect =
-        new URLSearchParams(window.location.search).get("openLevelSelect") === "1";
-      if (returnToLevelSelect) {
+      const initialQuery = new URLSearchParams(window.location.search);
+      const returnToLevelSelect = initialQuery.get("openLevelSelect") === "1";
+      const startGameFromPresentation = initialQuery.get("startGame") === "1";
+      if (returnToLevelSelect || startGameFromPresentation) {
         history.replaceState(null, "", window.location.pathname + window.location.hash);
-        openLevelSelect();
+        if (startGameFromPresentation) {
+          startSelectedDifficulty(selectedDifficulty);
+        } else {
+          openLevelSelect();
+        }
       }
 
       function loadLanguage() {
@@ -2752,11 +3307,13 @@
       }
 
       function openOpeningPresentation() {
-        window.location.assign(createGameIntroUrl(false).href);
+        const introUrl = createGameIntroUrl(false, true);
+        introUrl.searchParams.set("flow", "start");
+        window.location.assign(introUrl.href);
       }
 
       // Share the existing translated strings with either the standalone page or its iframe.
-      function createGameIntroUrl(embedded) {
+      function createGameIntroUrl(embedded, projectOverview = false) {
         const introKeys = [
           "introPptLabel",
           "introPptSlide1Title",
@@ -2765,9 +3322,18 @@
           "introPptSlide2Body",
           "introPptSlide3Title",
           "introPptSlide3Body",
+          "projectIntroSlide1Title",
+          "projectIntroSlide1Body",
+          "projectIntroSlide2Title",
+          "projectIntroSlide2Body",
+          "projectIntroSlide3Title",
+          "projectIntroSlide3Body",
+          "projectIntroContinue",
+          "projectIntroDone",
           "introPptPrevious",
           "introPptNext",
           "introPptContinue",
+          "introPptSkip",
           "introPptPage",
           "languageLabel"
         ];
@@ -2781,14 +3347,16 @@
         introUrl.searchParams.set("lang", language);
         introUrl.searchParams.set("translations", JSON.stringify(introTranslations));
         if (embedded) introUrl.searchParams.set("embedded", "1");
+        if (projectOverview) introUrl.searchParams.set("mode", "project");
         return introUrl;
       }
 
-      function openGameIntroFrame() {
+      function openGameIntroFrame(projectOverview = false) {
         if (!gameIntroOverlay.hidden) return;
 
         gameIntroReturnState = state;
         gameIntroReturnScreen = activeScreen;
+        gameIntroReturnFocus = document.activeElement;
         if (state === "running") {
           state = "paused";
           stopMusic();
@@ -2797,12 +3365,12 @@
           updatePauseButton();
         }
 
-        gameIntroFrame.src = createGameIntroUrl(true).href;
+        gameIntroFrame.src = createGameIntroUrl(true, projectOverview).href;
         gameIntroOverlay.hidden = false;
-        gameIntroCloseButton.focus();
+        gameIntroFrame.focus();
       }
 
-      function closeGameIntroFrame() {
+      function closeGameIntroFrame(skipToLevels = false) {
         if (gameIntroOverlay.hidden) return;
 
         gameIntroOverlay.hidden = true;
@@ -2810,12 +3378,21 @@
 
         const returnState = gameIntroReturnState;
         const returnScreen = gameIntroReturnScreen;
+        const returnFocus = gameIntroReturnFocus;
         gameIntroReturnState = null;
         gameIntroReturnScreen = null;
+        gameIntroReturnFocus = null;
+
+        if (skipToLevels) {
+          state = "menu";
+          openLevelSelect();
+          document.getElementById("levelsBackButton").focus();
+          return;
+        }
 
         if (returnState === "running") {
           startGame();
-          gameIntroLaunchButton.focus();
+          if (returnFocus instanceof HTMLElement) returnFocus.focus();
           return;
         }
 
@@ -2824,7 +3401,7 @@
           showScreen(returnScreen);
           updateGameControls();
           updatePauseButton();
-          gameIntroLaunchButton.focus();
+          if (returnFocus instanceof HTMLElement) returnFocus.focus();
         }
       }
 
@@ -2912,6 +3489,9 @@
           : `<span class="top-button-icon" aria-hidden="true">♫</span><span>${translate("musicOff")}</span>`;
         musicButton.setAttribute("aria-label", translate(musicEnabled ? "disableMusic" : "enableMusic"));
         musicButton.setAttribute("aria-pressed", String(musicEnabled));
+        settingsMusicToggleLabel.textContent = translate(musicEnabled ? "musicOn" : "musicOff");
+        settingsMusicToggle.setAttribute("aria-label", translate(musicEnabled ? "disableMusic" : "enableMusic"));
+        settingsMusicToggle.setAttribute("aria-pressed", String(musicEnabled));
       }
 
       function syncMusic() {
@@ -3078,55 +3658,61 @@
       }
 
       function draw(progress = 0) {
-        // Clear to transparency so the animated page sky remains visible below the board.
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const now = performance.now();
 
         if (food) {
           const centerX = food.x * cellSize + cellSize / 2;
           const centerY = food.y * cellSize + cellSize / 2;
+          const rotation = now / 1000;
+          const radius = cellSize * (.27 + Math.sin(now / 260) * .025);
           ctx.save();
-          ctx.shadowColor = food.color;
-          ctx.shadowBlur = 18;
-          ctx.fillStyle = food.color;
-          if (food.key === "berry") {
-            ctx.beginPath();
-            ctx.arc(centerX, centerY + 1, cellSize * .31, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = "#a6ff5f";
-            ctx.beginPath();
-            ctx.ellipse(centerX + 3, centerY - cellSize * .28, cellSize * .12, cellSize * .22, .7, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = "#ffd2d8";
-            ctx.beginPath();
-            ctx.arc(centerX - 2, centerY - 2, cellSize * .1, 0, Math.PI * 2);
-            ctx.fill();
-          } else if (food.key === "gold") {
-            drawStar(centerX, centerY, cellSize * .4, cellSize * .19);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = "#fff0b3";
-            ctx.beginPath();
-            ctx.arc(centerX - 2, centerY - 3, cellSize * .08, 0, Math.PI * 2);
-            ctx.fill();
-          } else {
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY - cellSize * .42);
-            ctx.lineTo(centerX + cellSize * .32, centerY - cellSize * .08);
-            ctx.lineTo(centerX + cellSize * .2, centerY + cellSize * .34);
-            ctx.lineTo(centerX - cellSize * .2, centerY + cellSize * .34);
-            ctx.lineTo(centerX - cellSize * .32, centerY - cellSize * .08);
-            ctx.closePath();
-            ctx.fill();
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = "rgba(255, 255, 255, .62)";
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY - cellSize * .3);
-            ctx.lineTo(centerX - cellSize * .08, centerY + cellSize * .2);
-            ctx.lineTo(centerX - cellSize * .2, centerY - cellSize * .06);
-            ctx.closePath();
-            ctx.fill();
-          }
+          ctx.translate(centerX, centerY);
+          ctx.rotate(rotation);
+          ctx.shadowColor = "#ff00ff";
+          ctx.shadowBlur = 15 + Math.sin(now / 180) * 5;
+          ctx.fillStyle = "rgba(255, 0, 255, .2)";
+          ctx.strokeStyle = "#ff00ff";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(0, -radius);
+          ctx.lineTo(radius, 0);
+          ctx.lineTo(0, radius);
+          ctx.lineTo(-radius, 0);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = "rgba(0, 255, 255, .72)";
+          ctx.beginPath();
+          ctx.moveTo(0, -radius);
+          ctx.lineTo(0, 0);
+          ctx.lineTo(-radius, 0);
+          ctx.closePath();
+          ctx.fill();
+          ctx.strokeStyle = "rgba(255, 255, 255, .78)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(0, -radius * .62);
+          ctx.lineTo(0, radius * .62);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        const segmentSize = cellSize * .72;
+        const headSize = cellSize * .9;
+        const tailColor = "#00ffff";
+        for (let index = Math.min(previousSnake.length - 1, snake.length - 1); index >= 1; index -= 1) {
+          const segment = previousSnake[index];
+          if (!segment) continue;
+          const x = segment.x * cellSize + (cellSize - segmentSize) / 2;
+          const y = segment.y * cellSize + (cellSize - segmentSize) / 2;
+          ctx.save();
+          ctx.globalAlpha = .14 * (1 - index / Math.max(1, previousSnake.length));
+          ctx.fillStyle = tailColor;
+          ctx.shadowColor = tailColor;
+          ctx.shadowBlur = 10;
+          ctx.fillRect(x, y, segmentSize, segmentSize);
           ctx.restore();
         }
 
@@ -3134,114 +3720,105 @@
           const previous = previousSnake[Math.min(index, previousSnake.length - 1)] || segment;
           const xPosition = previous.x + (segment.x - previous.x) * progress;
           const yPosition = previous.y + (segment.y - previous.y) * progress;
-          // Slightly separated, rounded cells give the body a plump jelly-candy look.
-          const size = cellSize * (index === 0 ? .9 : .76);
+          const size = index === 0 ? headSize : segmentSize;
           const x = xPosition * cellSize + (cellSize - size) / 2;
           const y = yPosition * cellSize + (cellSize - size) / 2;
-          const radius = size * (index === 0 ? .43 : .4);
-          const color = snakeColorAt(index / Math.max(1, snake.length - 1));
+          const pulse = (Math.sin(now / 900 + index * .55) + 1) / 2;
+          const green = `rgb(0, ${Math.round(170 + pulse * 85)}, ${Math.round(10 + pulse * 20)})`;
+          const cyan = `rgb(0, ${Math.round(180 + pulse * 40)}, ${Math.round(205 + pulse * 50)})`;
+          const color = index === 0 ? "#00ff00" : index % 2 === 0 ? green : cyan;
           ctx.save();
           ctx.shadowColor = color;
-          ctx.shadowBlur = index === 0 ? 11 : 7;
-          const jellyGradient = ctx.createRadialGradient(
-            x + size * .3,
-            y + size * .23,
-            size * .04,
-            x + size * .52,
-            y + size * .57,
-            size * .76
-          );
-          jellyGradient.addColorStop(0, "rgba(255, 255, 255, .94)");
-          jellyGradient.addColorStop(.22, color);
-          jellyGradient.addColorStop(1, color);
-          ctx.fillStyle = jellyGradient;
-          roundedRect(ctx, x, y, size, size, radius);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-          ctx.lineWidth = 1.2;
-          ctx.strokeStyle = "rgba(255,255,255,.72)";
-          ctx.stroke();
-          ctx.fillStyle = "rgba(255,255,255,.42)";
-          roundedRect(ctx, x + size * .2, y + size * .12, size * .46, Math.max(2, size * .12), size * .08);
-          ctx.fill();
+          ctx.shadowBlur = index === 0 ? 16 : 8 + pulse * 5;
+          if (index === 0) {
+            drawMechanicalHead(xPosition * cellSize + cellSize / 2, yPosition * cellSize + cellSize / 2, size);
+          } else {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, size, size);
+            ctx.lineWidth = 1.3;
+            ctx.strokeStyle = pulse > .5 ? "#00ffff" : "#00ff00";
+            ctx.strokeRect(x + .7, y + .7, size - 1.4, size - 1.4);
+            ctx.globalAlpha = .62;
+            ctx.fillStyle = "#061019";
+            ctx.fillRect(x + size * .25, y + size * .25, size * .5, size * .5);
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = "#d8ffff";
+            ctx.fillRect(x + size * .28, y + size * .16, size * .18, Math.max(1, size * .07));
+          }
           ctx.restore();
 
-          if (index === 0) drawEyes(xPosition, yPosition, size);
+          if (index === 0) drawEyes(xPosition, yPosition, size, now);
         });
       }
 
-      function roundedRect(context, x, y, width, height, radius) {
-        context.beginPath();
-        context.roundRect(x, y, width, height, radius);
-      }
+      function drawMechanicalHead(centerX, centerY, size) {
+        const forwardX = direction.x;
+        const forwardY = direction.y;
+        const sideX = -forwardY;
+        const sideY = forwardX;
+        const point = (forward, side) => ({
+          x: centerX + forwardX * size * forward + sideX * size * side,
+          y: centerY + forwardY * size * forward + sideY * size * side
+        });
+        const points = [
+          point(.52, 0),
+          point(.22, .4),
+          point(-.34, .4),
+          point(-.5, .22),
+          point(-.5, -.22),
+          point(-.34, -.4),
+          point(.22, -.4)
+        ];
 
-      function drawStar(centerX, centerY, outerRadius, innerRadius) {
         ctx.beginPath();
-        for (let point = 0; point < 10; point += 1) {
-          const radius = point % 2 === 0 ? outerRadius : innerRadius;
-          const angle = -Math.PI / 2 + point * Math.PI / 5;
-          const x = centerX + Math.cos(angle) * radius;
-          const y = centerY + Math.sin(angle) * radius;
-          if (point === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
+        points.forEach((vertex, index) => {
+          if (index === 0) ctx.moveTo(vertex.x, vertex.y);
+          else ctx.lineTo(vertex.x, vertex.y);
+        });
         ctx.closePath();
+        ctx.fillStyle = "rgba(0, 255, 0, .32)";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#00ff00";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(point(.2, -.28).x, point(.2, -.28).y);
+        ctx.lineTo(point(-.25, -.28).x, point(-.25, -.28).y);
+        ctx.moveTo(point(.2, .28).x, point(.2, .28).y);
+        ctx.lineTo(point(-.25, .28).x, point(-.25, .28).y);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(0, 255, 255, .78)";
+        ctx.stroke();
       }
 
-      function snakeColorAt(position) {
-        const scaledPosition = position * (snakePalette.length - 1);
-        const paletteIndex = Math.min(Math.floor(scaledPosition), snakePalette.length - 2);
-        const amount = scaledPosition - paletteIndex;
-        const channels = snakePalette[paletteIndex].map((channel, index) =>
-          Math.round(channel + (snakePalette[paletteIndex + 1][index] - channel) * amount)
-        );
-        return `rgb(${channels.join(",")})`;
-      }
-
-      function drawEyes(xPosition, yPosition, headSize) {
+      function drawEyes(xPosition, yPosition, headSize, now) {
         const centerX = xPosition * cellSize + cellSize / 2;
         const centerY = yPosition * cellSize + cellSize / 2;
-        const forwardX = direction.x * headSize * .16;
-        const forwardY = direction.y * headSize * .16;
-        const sideX = direction.y * headSize * .19;
-        const sideY = -direction.x * headSize * .19;
-        const eyeRadius = headSize * .145;
-        const cheekRadius = headSize * .09;
+        const forwardX = direction.x * headSize * .1;
+        const forwardY = direction.y * headSize * .1;
+        const sideX = -direction.y * headSize * .2;
+        const sideY = direction.x * headSize * .2;
+        const eyeRadius = Math.max(1.5, headSize * .095);
+        const wink = now % 4000 < 150;
         ctx.save();
-        ctx.fillStyle = "rgba(255, 143, 174, .62)";
-        for (const side of [-1, 1]) {
-          ctx.beginPath();
-          ctx.arc(
-            centerX + direction.x * headSize * .02 + sideX * side * 1.75,
-            centerY + direction.y * headSize * .02 + sideY * side * 1.75,
-            cheekRadius,
-            0,
-            Math.PI * 2
-          );
-          ctx.fill();
-        }
         for (const side of [-1, 1]) {
           const eyeX = centerX + forwardX + sideX * side;
           const eyeY = centerY + forwardY + sideY * side;
-          ctx.fillStyle = "rgba(255, 255, 255, .98)";
+          const eyeHeight = side === 1 && wink ? Math.max(1, eyeRadius * .16) : eyeRadius;
+          ctx.save();
+          ctx.shadowColor = "#ff00ff";
+          ctx.shadowBlur = 11;
+          ctx.fillStyle = "#ff00ff";
           ctx.beginPath();
-          ctx.arc(eyeX, eyeY, eyeRadius, 0, Math.PI * 2);
+          ctx.ellipse(eyeX, eyeY, eyeRadius, eyeHeight, 0, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = "#344150";
-          ctx.beginPath();
-          ctx.arc(eyeX + direction.x * eyeRadius * .24, eyeY + direction.y * eyeRadius * .24, eyeRadius * .56, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "#fff";
-          ctx.beginPath();
-          ctx.arc(eyeX - eyeRadius * .2, eyeY - eyeRadius * .25, eyeRadius * .2, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.restore();
         }
         ctx.restore();
       }
 
-      // Start with the introduction; the final slide's Next button opens level selection.
-      document.getElementById("menuStartButton").addEventListener("click", openOpeningPresentation);
-      document.getElementById("menuSettingsButton").addEventListener("click", openSettings);
+      // New game presents the project overview before the original tutorial.
       document.getElementById("menuArtworkStartButton").addEventListener("click", openOpeningPresentation);
       document.getElementById("menuHighScoresButton").addEventListener("click", openHighScores);
       document.getElementById("menuArtworkSettingsButton").addEventListener("click", openSettings);
@@ -3263,12 +3840,32 @@
       document.getElementById("victoryMenuButton").addEventListener("click", returnToMenu);
       tutorialButton.addEventListener("click", () => startTutorial());
       gameIntroLaunchButton.addEventListener("click", openGameIntroFrame);
+      document.getElementById("projectIntroButton").addEventListener("click", () => openGameIntroFrame(true));
+      document.getElementById("menuProjectIntroButton").addEventListener("click", () => openGameIntroFrame(true));
       gameIntroCloseButton.addEventListener("click", closeGameIntroFrame);
       window.addEventListener("message", (event) => {
         if (event.source !== gameIntroFrame.contentWindow || !event.data) return;
 
         if (event.data.type === "game-intro:close") {
           closeGameIntroFrame();
+          return;
+        }
+
+        if (event.data.type === "game-project:close") {
+          closeGameIntroFrame();
+          return;
+        }
+
+        if (event.data.type === "game-intro:skip") {
+          closeGameIntroFrame(true);
+          return;
+        }
+
+        if (event.data.type === "game-intro:start-game") {
+          const shouldStartFromMenu =
+            gameIntroReturnState === "menu" || gameIntroReturnState === "levels";
+          closeGameIntroFrame();
+          if (shouldStartFromMenu) startSelectedDifficulty(selectedDifficulty);
           return;
         }
 
@@ -3331,11 +3928,14 @@
         updateVoiceRateDisplay();
         savePraiseVoiceRate();
       });
-      musicButton.addEventListener("click", () => {
+      function toggleMusicPreference() {
         musicEnabled = !musicEnabled;
         updateMusicButton();
         syncMusic();
-      });
+      }
+
+      musicButton.addEventListener("click", toggleMusicPreference);
+      settingsMusicToggle.addEventListener("click", toggleMusicPreference);
       document.getElementById("restartButton").addEventListener("click", () => {
         resetBoard();
         startGame();
@@ -3452,6 +4052,20 @@
           if (trackedTouch) touchStart = null;
         }, { passive: true });
       }
+
+      const reducedMotionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+      window.addEventListener("pointermove", (event) => {
+        const menuMotionArea = document.querySelector('.game[data-active-screen="menu"] .board-wrap');
+        const menuMedusaStage = document.querySelector(".game[data-active-screen=\"menu\"] .medusa-stage");
+        if (!menuMotionArea || !menuMedusaStage || reducedMotionPreference.matches) return;
+        const bounds = menuMotionArea.getBoundingClientRect();
+        const insideMenu = event.clientX >= bounds.left && event.clientX <= bounds.right &&
+          event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+        const offsetX = insideMenu ? (event.clientX - bounds.left) / bounds.width - .5 : 0;
+        const offsetY = insideMenu ? (event.clientY - bounds.top) / bounds.height - .5 : 0;
+        menuMedusaStage.style.setProperty("--medusa-shift-x", `${offsetX * -8}px`);
+        menuMedusaStage.style.setProperty("--medusa-shift-y", `${offsetY * -8}px`);
+      });
 
       // Do not auto-launch the gameplay tutorial; the opening presentation is the entry flow.
     })();
