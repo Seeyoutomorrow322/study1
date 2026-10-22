@@ -2747,6 +2747,16 @@
       const directionQueue = [];
       let score = 0;
       let best = loadBest();
+      const serializedReturnAction = sessionStorage.getItem("gameIntroReturnAction");
+      let returnAction = null;
+      if (serializedReturnAction) {
+        try {
+          returnAction = JSON.parse(serializedReturnAction);
+        } catch (error) {
+          console.warn("Unable to read the game introduction return action.", error);
+        }
+        sessionStorage.removeItem("gameIntroReturnAction");
+      }
       let language = loadLanguage();
       let musicVolume = loadMusicVolume();
       let praiseVoiceRate = loadPraiseVoiceRate();
@@ -2793,12 +2803,14 @@
       updateGameControls();
       draw();
 
-      // Return from the standalone presentation directly into the existing level picker.
-      const initialQuery = new URLSearchParams(window.location.search);
-      const returnToLevelSelect = initialQuery.get("openLevelSelect") === "1";
-      const startGameFromPresentation = initialQuery.get("startGame") === "1";
+      // Return from the standalone presentation directly into the requested game screen.
+      const startGameFromPresentation = returnAction?.action === "startGame";
+      const returnToLevelSelect = returnAction?.action === "openLevelSelect";
       if (returnToLevelSelect || startGameFromPresentation) {
-        history.replaceState(null, "", window.location.pathname + window.location.hash);
+        if (Object.hasOwn(translations, returnAction.language)) {
+          language = returnAction.language;
+          applyLanguage();
+        }
         if (startGameFromPresentation) {
           startSelectedDifficulty(selectedDifficulty);
         } else {
@@ -2807,7 +2819,8 @@
       }
 
       function loadLanguage() {
-        const requestedLanguage = new URLSearchParams(window.location.search).get("lang");
+        const requestedLanguage =
+          returnAction?.language ?? new URLSearchParams(window.location.search).get("lang");
         if (Object.hasOwn(translations, requestedLanguage)) {
           try {
             localStorage.setItem("neon-snake-language", requestedLanguage);
@@ -3307,13 +3320,12 @@
       }
 
       function openOpeningPresentation() {
-        const introUrl = createGameIntroUrl(false, true);
-        introUrl.searchParams.set("flow", "start");
-        window.location.assign(introUrl.href);
+        createGameIntroUrl(false, true, true);
+        window.location.href = "gameIntro.html";
       }
 
       // Share the existing translated strings with either the standalone page or its iframe.
-      function createGameIntroUrl(embedded, projectOverview = false) {
+      function createGameIntroUrl(embedded, projectOverview = false, startFlow = false) {
         const introKeys = [
           "introPptLabel",
           "introPptSlide1Title",
@@ -3344,10 +3356,13 @@
           ])
         );
         const introUrl = new URL("./gameIntro.html", window.location.href);
-        introUrl.searchParams.set("lang", language);
-        introUrl.searchParams.set("translations", JSON.stringify(introTranslations));
-        if (embedded) introUrl.searchParams.set("embedded", "1");
-        if (projectOverview) introUrl.searchParams.set("mode", "project");
+        sessionStorage.setItem("gameIntroData", JSON.stringify({
+          translations: introTranslations,
+          language,
+          embedded,
+          projectOverview,
+          startFlow
+        }));
         return introUrl;
       }
 

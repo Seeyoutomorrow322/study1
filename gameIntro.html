@@ -787,27 +787,31 @@
   <script>
     (() => {
       const supportedLanguages = ["en", "zh", "ko"];
-      const query = new URLSearchParams(window.location.search);
-      const projectMode = query.get("mode") === "project";
-      const startFlow = query.get("flow") === "start";
-      document.body.dataset.pageMode = projectMode ? "project" : "tutorial";
-      document.getElementById("projectCards").hidden = !projectMode;
+      const serializedIntroData = sessionStorage.getItem("gameIntroData");
 
-      const serializedTranslations = query.get("translations");
-
-      // Load only the selected strings supplied from index.html's translation dictionary.
-      if (!serializedTranslations) {
+      if (!serializedIntroData) {
         throw new Error("Open gameIntro.html from index.html to load the game translations.");
       }
 
-      let translations;
+      let introData;
       try {
-        translations = JSON.parse(serializedTranslations);
+        introData = JSON.parse(serializedIntroData);
       } catch (error) {
-        throw new Error("The game translation data could not be loaded.", { cause: error });
+        throw new Error("The game introduction data could not be loaded.", { cause: error });
       }
 
-      let language = query.get("lang");
+      if (!introData || typeof introData !== "object" || !introData.translations) {
+        throw new Error("The game introduction data is incomplete.");
+      }
+
+      const translations = introData.translations;
+      const embedded = introData.embedded === true;
+      const projectMode = introData.projectOverview === true;
+      const startFlow = introData.startFlow === true;
+      document.body.dataset.pageMode = projectMode ? "project" : "tutorial";
+      document.getElementById("projectCards").hidden = !projectMode;
+
+      let language = introData.language;
       if (!supportedLanguages.includes(language) || !translations[language]) {
         language = "en";
       }
@@ -903,7 +907,7 @@
 
         isPptOpen = false;
         if (projectMode && !startFlow) {
-          if (query.get("embedded") === "1") {
+          if (embedded) {
             window.parent.postMessage({ type: "game-project:close" }, "*");
           } else {
             window.location.assign(new URL("./index.html", window.location.href).href);
@@ -911,22 +915,24 @@
           return;
         }
 
-        if (query.get("embedded") === "1") {
+        if (embedded) {
           // In the game iframe, notify the parent to close without navigating or selecting a level.
           window.parent.postMessage({ type: "game-intro:close" }, "*");
           return;
         }
 
         const indexUrl = new URL("./index.html", window.location.href);
-        indexUrl.searchParams.set("openLevelSelect", "1");
-        indexUrl.searchParams.set("lang", language);
+        sessionStorage.setItem("gameIntroReturnAction", JSON.stringify({
+          action: "openLevelSelect",
+          language
+        }));
         window.location.assign(indexUrl.href);
       }
 
       function skipToLevelSelect() {
         isPptOpen = false;
         if (projectMode && !startFlow) {
-          if (query.get("embedded") === "1") {
+          if (embedded) {
             window.parent.postMessage({ type: "game-project:close" }, "*");
           } else {
             window.location.assign(new URL("./index.html", window.location.href).href);
@@ -934,14 +940,16 @@
           return;
         }
 
-        if (query.get("embedded") === "1") {
+        if (embedded) {
           window.parent.postMessage({ type: "game-intro:skip" }, "*");
           return;
         }
 
         const indexUrl = new URL("./index.html", window.location.href);
-        indexUrl.searchParams.set("openLevelSelect", "1");
-        indexUrl.searchParams.set("lang", language);
+        sessionStorage.setItem("gameIntroReturnAction", JSON.stringify({
+          action: "openLevelSelect",
+          language
+        }));
         window.location.assign(indexUrl.href);
       }
 
@@ -949,14 +957,16 @@
         if (!isPptOpen) return;
         isPptOpen = false;
 
-        if (query.get("embedded") === "1") {
+        if (embedded) {
           window.parent.postMessage({ type: "game-intro:start-game" }, "*");
           return;
         }
 
         const indexUrl = new URL("./index.html", window.location.href);
-        indexUrl.searchParams.set("startGame", "1");
-        indexUrl.searchParams.set("lang", language);
+        sessionStorage.setItem("gameIntroReturnAction", JSON.stringify({
+          action: "startGame",
+          language
+        }));
         window.location.assign(indexUrl.href);
       }
 
@@ -968,7 +978,7 @@
 
         language = selectedLanguage;
         refreshLanguage();
-        if (query.get("embedded") === "1") {
+        if (embedded) {
           window.parent.postMessage(
             { type: "game-intro:language", language },
             "*"
