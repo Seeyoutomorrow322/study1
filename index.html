@@ -505,6 +505,86 @@
       padding: 0;
       text-align: left;
     }
+    .leaderboard-podium {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .podium-entry {
+      display: flex;
+      flex: 1 1 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      text-align: center;
+    }
+    .podium-platform {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 12px 8px;
+      border: 1px solid rgba(255, 255, 255, .35);
+      border-radius: 14px 14px 4px 4px;
+      color: #1a1a2e;
+      overflow-wrap: anywhere;
+    }
+    .podium-entry.is-top-1 { order: 2; }
+    .podium-entry.is-top-2 { order: 1; }
+    .podium-entry.is-top-3 { order: 3; }
+    .podium-entry.is-top-1 .podium-platform {
+      min-height: 180px;
+      border-color: rgba(255, 225, 125, .9);
+      background: linear-gradient(160deg, #fff0a8 0%, #e6b93f 52%, #9e6c12 100%);
+      box-shadow: 0 0 24px rgba(255, 207, 64, .45), 0 0 48px rgba(255, 185, 0, .2);
+    }
+    .podium-entry.is-top-2 .podium-platform {
+      min-height: 140px;
+      border-color: rgba(235, 242, 255, .8);
+      background: linear-gradient(160deg, #f4f7fc 0%, #aeb9cb 55%, #69778d 100%);
+    }
+    .podium-entry.is-top-3 .podium-platform {
+      min-height: 120px;
+      border-color: rgba(255, 207, 167, .8);
+      background: linear-gradient(160deg, #f4c29a 0%, #ba7042 55%, #754026 100%);
+    }
+    .podium-rank {
+      margin: 0;
+      color: var(--neon-cyan, #00ffff);
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.1;
+      text-shadow: 0 0 10px rgba(0, 255, 255, .5);
+    }
+    .podium-platform .leaderboard-player {
+      flex: 0 1 auto;
+      width: 100%;
+      color: #1a1a2e;
+      font-size: 15px;
+      font-weight: 850;
+      text-align: center;
+    }
+    .podium-platform .leaderboard-score {
+      flex: 0 1 auto;
+      width: 100%;
+      color: #1a1a2e;
+      font-size: 15px;
+      font-weight: 900;
+      text-align: center;
+      text-shadow: none;
+    }
+    @media (max-width: 420px) {
+      .leaderboard-podium { gap: 6px; }
+      .podium-platform { padding: 10px 5px; font-size: 12px; }
+    }
     .leaderboard-entry {
       display: flex;
       align-items: center;
@@ -1985,6 +2065,14 @@
     .leaderboard-score { color: var(--neon-green); text-shadow: 0 0 8px rgba(0, 255, 0, .5); }
     .leaderboard-empty,
     .leaderboard-status { color: #8ca4b8; }
+    .podium-entry.leaderboard-entry {
+      gap: 8px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
 
     .game[data-active-screen="tutorial"] .tutorial-callout {
       border-color: var(--neon-cyan);
@@ -2200,6 +2288,7 @@
               <div class="overlay-icon" aria-hidden="true">★</div>
               <h2 id="highScoresHeading" data-i18n="highScoresTitle">Leaderboard</h2>
               <div id="leaderboard-container">
+                <div class="leaderboard-podium" id="leaderboard-podium" role="list" aria-label="Top three players"></div>
                 <div class="leaderboard" id="leaderboard" role="list" aria-label="Leaderboard" data-i18n-aria-label="highScoresTitle"></div>
                 <p class="leaderboard-status" id="onlineLeaderboardStatus" role="status" aria-live="polite"></p>
               </div>
@@ -2391,6 +2480,7 @@
       const praiseCharacter = document.getElementById("praiseCharacter");
       const praiseMessageElement = document.getElementById("praiseMessage");
       const scoreElement = document.getElementById("score");
+      const onlineLeaderboardPodium = document.getElementById("leaderboard-podium");
       const onlineLeaderboardList = document.getElementById("leaderboard");
       const onlineLeaderboardStatus = document.getElementById("onlineLeaderboardStatus");
       const speedElement = document.getElementById("speed");
@@ -3058,13 +3148,15 @@
             return false;
           }
 
+          onlineLeaderboardPodium.replaceChildren();
           onlineLeaderboardList.replaceChildren();
           if (!data?.length) {
             onlineLeaderboardStatus.textContent = translate("onlineLeaderboardEmpty");
             return true;
           }
 
-          const fragment = document.createDocumentFragment();
+          const podiumFragment = document.createDocumentFragment();
+          const leaderboardFragment = document.createDocumentFragment();
           const playerNameOccurrences = Object.create(null);
           const displayNames = data.map((entry) => {
             const playerName = entry.player_name || "匿名玩家";
@@ -3073,22 +3165,34 @@
             return occurrence === 1 ? playerName : `${playerName}(${occurrence})`;
           });
           data.forEach((entry, index) => {
+            const isPodiumEntry = index < 3;
             const row = document.createElement("div");
-            row.className = `leaderboard-entry${index < 3 ? ` is-top-${index + 1}` : ""}`;
+            row.className = `${isPodiumEntry ? "podium-entry " : ""}leaderboard-entry${index < 3 ? ` is-top-${index + 1}` : ""}`;
             row.setAttribute("role", "listitem");
-            const rank = document.createElement("div");
-            rank.className = "leaderboard-rank";
-            rank.textContent = `${index + 1}.`;
             const player = document.createElement("div");
             player.className = "leaderboard-player";
             player.textContent = displayNames[index];
             const result = document.createElement("div");
             result.className = "leaderboard-score";
             result.textContent = `${formatScore(entry.score)} ${translate("pointsShort")}`;
-            row.append(rank, player, result);
-            fragment.append(row);
+            if (isPodiumEntry) {
+              const platform = document.createElement("div");
+              platform.className = "podium-platform";
+              const rank = document.createElement("h2");
+              rank.className = "podium-rank";
+              rank.textContent = `${index + 1}.`;
+              platform.append(rank, player, result);
+              row.append(platform);
+            } else {
+              const rank = document.createElement("div");
+              rank.className = "leaderboard-rank";
+              rank.textContent = `${index + 1}.`;
+              row.append(rank, player, result);
+            }
+            (isPodiumEntry ? podiumFragment : leaderboardFragment).append(row);
           });
-          onlineLeaderboardList.append(fragment);
+          onlineLeaderboardPodium.append(podiumFragment);
+          onlineLeaderboardList.append(leaderboardFragment);
           onlineLeaderboardStatus.textContent = "";
           return true;
         } catch (error) {
@@ -3426,9 +3530,8 @@
         showScreen("levels");
       }
 
-      function openOpeningPresentation() {
-        createGameIntroUrl(false, true, true);
-        window.location.href = "gameIntro.html";
+      function startGameFromMenu() {
+        startSelectedDifficulty(selectedDifficulty);
       }
 
       // Share the existing translated strings with either the standalone page or its iframe.
@@ -3957,8 +4060,7 @@
         ctx.restore();
       }
 
-      // New game presents the project overview before the original tutorial.
-      document.getElementById("menuArtworkStartButton").addEventListener("click", openOpeningPresentation);
+      document.getElementById("menuArtworkStartButton").addEventListener("click", startGameFromMenu);
       document.getElementById("menuHighScoresButton").addEventListener("click", openHighScores);
       document.getElementById("menuArtworkSettingsButton").addEventListener("click", openSettings);
       document.getElementById("menuMoreGamesButton").addEventListener("click", openMoreGames);
